@@ -371,6 +371,12 @@ int timestamp = 0; //test mode
 bool goingright = true;
 bool goingup = true;
 byte frame = 0;
+byte screensaver; // 0 pro amogus, 1 pro čas a 2 pro datum
+unsigned long milisAtStart;
+unsigned long secondsAtStart;
+int yearAtStart;
+byte monthAtStart;
+byte dayAtStart;
 
 void setup() {
   pinMode(pcswitchPin, OUTPUT);
@@ -378,6 +384,43 @@ void setup() {
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
   Serial.begin(9600);
+  Serial.write("Screen module");
+  delay(500);
+  if (Serial.read() == 'u'){
+    switch (Serial.read()){
+      case 'a':
+        screensaver = 0;
+        break;
+      case 't':
+        screensaver = 1;
+        Serial.write('k');
+        delay(500);
+        String rec = "";
+        while (Serial.available() > 0){
+          rec = rec + Serial.read().toString();
+        }
+        secondsAtStart = rec.parseInt(); // mělo by vracet long (neřeš)
+        break;
+      case 'd':
+        screensaver = 2;
+        Serial.write('k');
+        delay(500);
+        String rec = "";
+        while (Serial.available() > 0){
+          rec = rec + Serial.read().toString();
+        }
+        secondsAtStart = rec.parseInt();
+        Serial.write('k');
+        delay(500);
+        rec = "";
+        while (Serial.available() > 0){
+          rec = rec + Serial.read().toString();
+        }
+        yearAtStart = rec.substring(0, rec.indexOf('-')).parseInt();
+        monthAtStart = rec.substring(rec.index0f('-')+1, rec.substring(rec.index0f('-')+1, rec.length()).indexOf('-'));
+        dayAtStart = rec.substring(rec.substring(rec.index0f('-')+1, rec.length()).indexOf('-'), rec.length());
+    }
+  }
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
