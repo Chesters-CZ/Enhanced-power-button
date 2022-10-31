@@ -383,52 +383,12 @@ void setup() {
   pinMode(localswitchPin, INPUT_PULLUP);
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
-  Serial.begin(9600);
-  Serial.write("Screen module");
-  delay(500);
-  if (Serial.read() == 'u'){
-    switch (Serial.read()){
-      case 'a':
-        screensaver = 0;
-        break;
-      case 't':
-        screensaver = 1;
-        Serial.write('k');
-        delay(500);
-        String rec = "";
-        while (Serial.available() > 0){
-          rec = rec + Serial.read().toString();
-        }
-        secondsAtStart = rec.parseInt(); // mělo by vracet long (neřeš)
-        break;
-      case 'd':
-        screensaver = 2;
-        Serial.write('k');
-        delay(500);
-        String rec = "";
-        while (Serial.available() > 0){
-          rec = rec + Serial.read().toString();
-        }
-        secondsAtStart = rec.parseInt();
-        Serial.write('k');
-        delay(500);
-        rec = "";
-        while (Serial.available() > 0){
-          rec = rec + Serial.read().toString();
-        }
-        yearAtStart = rec.substring(0, rec.indexOf('-')).parseInt();
-        monthAtStart = rec.substring(rec.index0f('-')+1, rec.substring(rec.index0f('-')+1, rec.length()).indexOf('-'));
-        dayAtStart = rec.substring(rec.substring(rec.index0f('-')+1, rec.length()).indexOf('-'), rec.length());
-    }
-  }
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     for (;;); // Don't proceed, loop forever
   }
-
-
 
   // Clear the buffer
   display.clearDisplay();
@@ -441,7 +401,49 @@ void setup() {
 
   drawcustombitmap();
   display.display();
-  delay(2000);
+  delay(1000);
+
+  Serial.begin(9600);
+  Serial.write("Screen module");
+  delay(500);
+  String rec;
+  if (Serial.read() == 'u') {
+    switch (Serial.read()) {
+      case 'a':
+        screensaver = 0;
+        break;
+      case 't':
+        screensaver = 1;
+        Serial.write('k');
+        delay(500);
+        rec = "";
+        while (Serial.available() > 0) {
+          rec = rec + Serial.read();
+        }
+        secondsAtStart = atol(rec.c_str()); // mělo by vracet long (neřeš)
+        break;
+      case 'd':
+        screensaver = 2;
+        Serial.write('k');
+        delay(500);
+        rec = "";
+        while (Serial.available() > 0) {
+          rec = rec + Serial.read();
+        }
+        secondsAtStart = atol(rec.c_str());
+        Serial.write('k');
+        delay(500);
+        rec = "";
+        while (Serial.available() > 0) {
+          rec = rec + Serial.read();
+        }
+        yearAtStart = atol(rec.substring(0, rec.indexOf('-')).c_str());
+        monthAtStart = atol(rec.substring(rec.indexOf('-') + 1, rec.substring(rec.indexOf('-') + 1, rec.length()).indexOf('-')).c_str());
+        dayAtStart = atol(rec.substring(rec.substring(rec.indexOf('-') + 1, rec.length()).indexOf('-'), rec.length()).c_str());
+    }
+  }
+
+  delay(1000);
 
   // display.display() is NOT necessary after every single drawing command,
   // unless that's what you want...rather, you can batch up a bunch of
@@ -493,32 +495,39 @@ void loop() {
         timestamp++;
       }
       else {
+        if (screensaver == 0) {
+          if (x > 117 || x < 1) {
+            goingright = !goingright;
+          }
+          if (y > 21  || y < 1) {
+            goingup    = !goingup;
+          }
 
-        if (x > 117 || x < 1) {
-          goingright = !goingright;
-        }
-        if (y > 21  || y < 1) {
-          goingup    = !goingup;
-        }
+          if (goingright == true) {
+            x = x + 1;
+          } else {
+            x = x - 1;
+          }
 
-        if (goingright == true) {
-          x = x + 1;
-        } else {
-          x = x - 1;
-        }
+          if (goingup == true) {
+            y = y + 1;
+          } else {
+            y = y - 1;
+          }
 
-        if (goingup == true) {
-          y = y + 1;
-        } else {
-          y = y - 1;
+          display.clearDisplay();
+          display.drawBitmap(x, y, amogus[frame % 6], 10, 10, WHITE);
+          frame++;
+          display.display();
+          delay(30);
         }
-
-        display.clearDisplay();
-        display.drawBitmap(x, y, amogus[frame % 6], 10, 10, WHITE);
-        frame++;
-        display.display();
-        delay(30);
+        else if (screensaver == 1) {
+          
+          }
       }
+
+
+
     } else {
       Serial.println("pushed");
 

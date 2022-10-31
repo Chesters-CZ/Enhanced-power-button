@@ -17,6 +17,7 @@ def log(string):
     file.write(string + "\n")
     file.close()
 
+
 def awaitK():
     time.sleep(0.5)
     inp = arduino[screenAt].readLine()
@@ -25,6 +26,7 @@ def awaitK():
         time.sleep(0.25)
         inp = arduino[screenAt].readLine()
         log(ports[screenAt].port + "@" + getTime() + ": " + inp.decode('utf-8'))
+
 
 time.sleep(10)
 toast = ToastNotifier()
@@ -42,7 +44,7 @@ screenAt = -1
 i = 0
 for port, desc, hwid in sorted(ports):
     try:
-        arduino.append = serial.Serial(port='COM3', baudrate=9600, timeout=1)
+        arduino.append = serial.Serial(port=port, baudrate=9600, timeout=1)
         connected.append(True)
     except:
         log(getTime() + "Nastala chyba při připojování k " + "{}: {} [{}]".format(port, desc, hwid))
@@ -71,7 +73,9 @@ match (file2):
         arduino[screenAt].write(b"ut")  # use time
         awaitK()
         rn = datetime.datetime.now()
-        arduino[screenAt].write("" + ((rn.hour * 60 + rn.minute) * 60 + rn.second))
+        arduino[screenAt].write("" + ((rn.hour * 60 + rn.minute) * 60 + rn.second)) # posílá čas jako počet sekund
+                                                                                    # arduino funguje v milis, ale tutim
+                                                                                    # šetřim bandwidth
     case 2:
         arduino[screenAt].write(b"ud")  # use date
         awaitK()
@@ -80,10 +84,10 @@ match (file2):
         awaitK()
         arduino[screenAt].write("" + rn.strftime("%Y-%m-%d"))
 
-
 while True:
-    inp = arduino.readline()
-    print(inp)
-    log(inp.decode('utf-8'))
-
-# TODO: logovat všechny komunikace s arduinama včetně času a ze kterýho arduina to leze
+    i = 0
+    for a in arduino:
+        inp = a.readline()
+        print(inp)
+        log(ports[i].port + "@" + getTime() + ": " + inp.decode('utf-8'))
+        i = i + 1
