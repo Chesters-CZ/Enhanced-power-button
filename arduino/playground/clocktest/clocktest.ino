@@ -378,7 +378,8 @@ const uint8_t __comic15pt7bBitmaps[] PROGMEM = {
   0x03, 0x80, 0xE0, 0x38, 0x0E, 0x01, 0xE0, 0x78, 0x0F, 0x07, 0x81, 0xC0,
   0x60, 0x18, 0x06, 0x01, 0x80, 0x60, 0x38, 0x0E, 0x07, 0x87, 0xC3, 0xE0,
   0x70, 0x00, 0x0E, 0x00, 0x3E, 0x0C, 0xFE, 0x1B, 0xDC, 0x77, 0x1C, 0xFC,
-  0x3F, 0xD8, 0x3F, 0x00, 0x1C };
+  0x3F, 0xD8, 0x3F, 0x00, 0x1C
+};
 
 const GFXglyph __comic15pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,   9,    0,    1 },   // 0x20 ' '
@@ -475,17 +476,19 @@ const GFXglyph __comic15pt7bGlyphs[] PROGMEM = {
   {  3157,  10,  29,  11,    0,  -22 },   // 0x7B '{'
   {  3194,   3,  29,  12,    5,  -23 },   // 0x7C '|'
   {  3205,  10,  29,  11,    0,  -22 },   // 0x7D '}'
-  {  3242,  15,   8,  17,    1,  -14 } }; // 0x7E '~'
+  {  3242,  15,   8,  17,    1,  -14 }
+}; // 0x7E '~'
 
 const GFXfont __comic15pt7b PROGMEM = {
   (uint8_t  *)__comic15pt7bBitmaps,
   (GFXglyph *)__comic15pt7bGlyphs,
-  0x20, 0x7E, 40 };
+  0x20, 0x7E, 40
+};
 
 // Approx. 3929 bytes
 
 
-unsigned long milisAtStart = 67065000;
+unsigned long milisAtStart = 86390000;
 int yearAtStart;
 byte monthAtStart;
 byte dayAtStart;
@@ -567,13 +570,8 @@ void loop() {
   rnHours = rnHours % 24;
 
 
-  display.clearDisplay();
-  display.setFont(&__comic15pt7b);
-  display.setTextSize(1);
-  display.setCursor(0, 31);
-  display.setTextColor(SSD1306_WHITE);
-  display.println(noToDD(rnHours) + ":" + noToDD(rnMins) + ":" + noToDD(rnSecs));
-  display.display();
+
+  drawCenteredText(noToDD(rnHours) + ":" + noToDD(rnMins) + ":" + noToDD(rnSecs));
 }
 
 String noToDD(long i) {
@@ -583,13 +581,34 @@ String noToDD(long i) {
     return String(i);
 }
 
-String noToTD(long i){
-  if (i<10)
-    return "00"+ String(i);
-  else if (i<100)
-    return "0"+ String(i);
+String noToTD(long i) {
+  if (i < 10)
+    return "00" + String(i);
+  else if (i < 100)
+    return "0" + String(i);
   else
     return String(i);
+}
+
+void drawCenteredText(String str) {
+  unsigned int width;
+  unsigned int height;
+  int curX;
+  int curY;
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setFont(&__comic15pt7b);
+  display.getTextBounds(str, 0, 0, &curX, &curY, &width, &height);  // na pozicích curX a curY to vrací souřadnice spodního levýho rohu, což nepotřebuju, ale ty pozice musej bejt vyplněný, tak používám něco, co pak hned přepíšu
+
+  curX = 63 - (width / 2) ;
+  curY = 15 + (height / 2)  ;
+
+  Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
+
+  display.setCursor(curX, curY);
+  display.println(str);
+  display.display();
 }
 
 void testdrawline() {
