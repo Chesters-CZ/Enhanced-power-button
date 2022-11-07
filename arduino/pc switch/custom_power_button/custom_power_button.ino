@@ -808,21 +808,19 @@ void setup() {
 
   Serial.begin(9600);
   Serial.write("Screen module");
-  display.invertDisplay(true);
-  delay(5000);
-  display.invertDisplay(false);
+  delay(1500);
   char rec[32];
   if (Serial.peek() == 'u') {
     Serial.read();
     switch (Serial.read()) {
       case 'a':
         screensaver = 0;
-        drawCenteredText("screensaver");
+        // drawCenteredText("screensaver");
 
         break;
       case 't':
         screensaver = 1;
-        drawCenteredText("time");
+        // drawCenteredText("time");
 
         Serial.write("k");
         delay(2000);
@@ -839,7 +837,7 @@ void setup() {
         break;
       case 'd':
         screensaver = 2;
-        drawCenteredText("date");
+        // drawCenteredText("date");
 
         Serial.write('k');
         delay(500);
@@ -866,8 +864,7 @@ void setup() {
 
   }
   else {
-    drawCenteredText("none");
-    delay(5000);
+    // drawCenteredText("none");
   }
 
   delay(1000);

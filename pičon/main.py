@@ -81,7 +81,7 @@ while (looped < 3 and not found):
             log(getTime() + " Toto arduino není připojeno.")
     if (not found):
         looped = looped + 1
-        time.sleep(3)
+        time.sleep(0.5)
 
 if (not found):
     log(getTime() + " Žádné z detekovaných arduin není obrazovkové, vypínám se.")
