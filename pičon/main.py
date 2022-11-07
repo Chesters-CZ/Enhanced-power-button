@@ -13,24 +13,24 @@ def getTime():
 
 
 def log(string):
+    print(string)
     file = open(os.environ['USERPROFILE'] + '/enhanced-power-button-log.txt', 'a')
-    file.write(string + "\n")
+    file.write(string.__str__() + "\n")
     file.close()
 
 
 def awaitK():
     time.sleep(0.5)
-    inp = arduino[screenAt].readLine()
-    log(ports[screenAt].port + "@" + getTime() + ": " + inp.decode('utf-8'))
-    while (inp != b"k"):
+    screenInoMsg = arduino[screenAt].readline()
+    log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
+    while (screenInoMsg != b"k"):
         time.sleep(0.25)
-        inp = arduino[screenAt].readLine()
-        log(ports[screenAt].port + "@" + getTime() + ": " + inp.decode('utf-8'))
+        screenInoMsg = arduino[screenAt].readline()
+        log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
 
 
-time.sleep(10)
-toast = ToastNotifier()
 ports = serial.tools.list_ports.comports()
+file2 = open(os.environ['USERPROFILE'] + '\\enhanced-power-button-config.txt', 'r')
 
 log("Script spuštěn v " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 log("Dostupné COM porty jsou:")
@@ -42,45 +42,70 @@ arduino = []
 connected = []
 screenAt = -1
 i = 0
-for port, desc, hwid in sorted(ports):
+for prt, desc, hwid in sorted(ports):
+    log(getTime() + " Zkouším se připojit na " + prt + " (" + desc + ")")
     try:
-        arduino.append = serial.Serial(port=port, baudrate=9600, timeout=1)
+        temp = serial.Serial(port=prt, baudrate=9600, timeout=1)
+
+        if (arduino.__sizeof__() == 0):
+            arduino = temp
+        else:
+            arduino.append(temp)
+
         connected.append(True)
-    except:
-        log(getTime() + "Nastala chyba při připojování k " + "{}: {} [{}]".format(port, desc, hwid))
+    except():
+        if (arduino.__sizeof__() != 0):
+            arduino.append = False
+        log(getTime() + " Nastala chyba při připojování k " + "{}: {} [{}]".format(prt, desc, hwid))
         connected.append(False)
 
 i = 0
 found = False
 looped = 0
-while (looped < 3 and not found):
-    for a in arduino:
-        inp = a.readLine()
-        log(ports[i].port + "@" + getTime() + ": " + inp.decode('utf-8'))
-        if (inp == b"Screen module"):
-            log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
-            found = True
-            screenAt = i
-        i = i + 1
-    looped = looped + 1
 
-file2 = open(os.environ['USERPROFILE'] + '/enhanced-power-button-config.txt', 'r')
+while (looped < 3 and not found):
+    log(getTime() + " Kontroluji seznam arduin. Pokus " + looped.__str__())
+    i = 0
+    for a in arduino:
+        log(getTime() + " Kontroluji arduino " + i.__str__())
+        if (connected[i]):
+            inp = a.readline()
+            log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8'))
+            if (inp == b"Screen module"):
+                log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
+                found = True
+                screenAt = i
+                break
+            i = i + 1
+        else:
+            log(getTime() + " Toto arduino není připojeno.")
+    if (not found):
+        looped = looped + 1
+        time.sleep(3)
+
+if (not found):
+    log(getTime() + " Žádné z detekovaných arduin není obrazovkové, vypínám se.")
+    exit(0)
+
 # v config souboru bude buď 0 pro amoogus screensaver, 1 pro hodiny, nebo 2 pro datum
-match (file2):
-    case 0:
+match (file2.read()):
+    case "0":
+        log(getTime() + " Arduino bude ukazovat amoguse")
         arduino[screenAt].write(b"ua")  # use amogus
-    case 1:
+    case "1":
+        log(getTime() + " Arduino bude ukazovat čas")
         arduino[screenAt].write(b"ut")  # use time
         awaitK()
         rn = datetime.datetime.now()
-        arduino[screenAt].write("" + ((rn.hour * 60 + rn.minute) * 60 + rn.second)) # posílá čas jako počet sekund
-                                                                                    # arduino funguje v milis, ale tutim
-                                                                                    # šetřim bandwidth
-    case 2:
+        log(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
+        arduino[screenAt].write(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
+        # posílá čas jako počet sekund. arduino funguje v milis, ale tutim šetřim bandwidth
+    case "2":
+        log(getTime() + " Arduino bude ukazovat datum")
         arduino[screenAt].write(b"ud")  # use date
         awaitK()
         rn = datetime.datetime.now()
-        arduino[screenAt].write("" + ((rn.hour * 60 + rn.minute) * 60 + rn.second))
+        arduino[screenAt].write(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
         awaitK()
         arduino[screenAt].write("" + rn.strftime("%Y-%m-%d"))
 
@@ -88,6 +113,6 @@ while True:
     i = 0
     for a in arduino:
         inp = a.readline()
-        print(inp)
-        log(ports[i].port + "@" + getTime() + ": " + inp.decode('utf-8'))
+        if (inp.__len__() > 0):
+            log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8'))
         i = i + 1

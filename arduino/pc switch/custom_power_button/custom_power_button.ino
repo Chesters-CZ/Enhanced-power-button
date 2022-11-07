@@ -778,6 +778,7 @@ unsigned long milisAtStart;
 int yearAtStart;
 byte monthAtStart;
 byte dayAtStart;
+byte repeats;
 
 void setup() {
   pinMode(pcswitchPin, OUTPUT);
@@ -793,6 +794,7 @@ void setup() {
 
   // Clear the buffer
   display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
 
   // Draw a single pixel in white
   // display.drawPixel(10, 10, SSD1306_WHITE);
@@ -803,46 +805,69 @@ void setup() {
   // drawcustombitmap();
   drawSplash();
   display.display();
-  delay(1000);
 
   Serial.begin(9600);
   Serial.write("Screen module");
-  delay(500);
-  String rec;
-  if (Serial.read() == 'u') {
+  display.invertDisplay(true);
+  delay(5000);
+  display.invertDisplay(false);
+  char rec[32];
+  if (Serial.peek() == 'u') {
+    Serial.read();
     switch (Serial.read()) {
       case 'a':
         screensaver = 0;
+        drawCenteredText("screensaver");
+
         break;
       case 't':
         screensaver = 1;
-        Serial.write('k');
-        delay(500);
-        rec = "";
+        drawCenteredText("time");
+
+        Serial.write("k");
+        delay(2000);
+        repeats = 0;
         while (Serial.available() > 0) {
-          rec = rec + Serial.read();
+          rec[repeats] = Serial.read();
+          drawCenteredText(rec);
+          delay(100);
+          repeats++;
         }
-        milisAtStart = atol(rec.c_str()) * 1000;
+        rec[repeats] = '\0';
+        Serial.println("final value is " + String(atol(rec)));
+        milisAtStart = (atol(rec) * 1000L) - millis();
         break;
       case 'd':
         screensaver = 2;
+        drawCenteredText("date");
+
         Serial.write('k');
         delay(500);
-        rec = "";
+        repeats = 0;
         while (Serial.available() > 0) {
-          rec = rec + Serial.read();
+          rec[repeats] = Serial.read();
+          drawCenteredText(rec);
+          delay(100);
+          repeats++;
         }
-        milisAtStart = atol(rec.c_str()) * 1000;
-        Serial.write('k');
-        delay(500);
-        rec = "";
+        rec[repeats] = '\0';
+        Serial.println("final value is " + String(atol(rec)));
+        milisAtStart = (atol(rec) * 1000L) - millis();
+                       Serial.write('k');
+                       delay(500);
+                       String incString = "";
         while (Serial.available() > 0) {
-          rec = rec + Serial.read();
+        incString = incString + Serial.read();
         }
-        yearAtStart = atol(rec.substring(0, rec.indexOf('-')).c_str());
-        monthAtStart = atol(rec.substring(rec.indexOf('-') + 1, rec.substring(rec.indexOf('-') + 1, rec.length()).indexOf('-')).c_str());
-        dayAtStart = atol(rec.substring(rec.substring(rec.indexOf('-') + 1, rec.length()).indexOf('-'), rec.length()).c_str());
+        yearAtStart = atol(incString.substring(0, incString.indexOf('-')).c_str());
+                      monthAtStart = atol(incString.substring(incString.indexOf('-') + 1, incString.substring(incString.indexOf('-') + 1, incString.length()).indexOf('-')).c_str());
+                      dayAtStart = atol(incString.substring(incString.substring(incString.indexOf('-') + 1, incString.length()).indexOf('-'), incString.length()).c_str());
     }
+
+  }
+  else {
+    drawCenteredText("none");
+    delay(5000);
   }
 
   delay(1000);
@@ -864,136 +889,119 @@ void setup() {
 }
 
 void loop() {
-  while (true) {
-    display.clearDisplay();
-    pcswitch = digitalRead(localswitchPin);
-    // pcswitch = 0 if pushed, 1 if released
+  display.clearDisplay();
+  pcswitch = digitalRead(localswitchPin);
+  // pcswitch = 0 if pushed, 1 if released
 
-    if (pcswitch == 1) {
-      if (frame > 80) frame = frame - 80;
+  if (pcswitch == 1) {
+    if (frame > 80) frame = frame - 80;
 
-      if (timestamp < 1000) {
-        if (timestamp < 900) {
-          display.clearDisplay();
-          drawkris_inverted();
-          display.display();
-          /* original code
-             display.setTextSize(2);
-             display.setTextColor(SSD1306_WHITE);
-             display.setCursor(32, 12);
-             display.println(F("ready."));
-             display.display();
-          */
-        } else {
-          pcswitch = digitalRead(localswitchPin);
-
-          display.clearDisplay();
-          display.setTextSize(2);
-          display.setTextColor(SSD1306_WHITE);
-          display.setCursor(20, 12);
-          display.println(F("standby"));
-          display.display();
-        }
-        timestamp++;
-      }
-      else {
-        if (screensaver == 1) {
-          doClock();
-        }
-        else if (screensaver == 2) {
-        }
-        else {
-          if (x > 117 || x < 1) {
-            goingright = !goingright;
-          }
-          if (y > 21  || y < 1) {
-            goingup    = !goingup;
-          }
-
-          if (goingright == true) {
-            x = x + 1;
-          } else {
-            x = x - 1;
-          }
-
-          if (goingup == true) {
-            y = y + 1;
-          } else {
-            y = y - 1;
-          }
-
-          display.clearDisplay();
-          display.drawBitmap(x, y, amogus[frame % 6], 10, 10, WHITE);
-          frame++;
-          display.display();
-          delay(30);
-        }
-      }
-
-
-
-    } else {
-      Serial.println("pushed");
-
-      digitalWrite(pcswitchPin, HIGH);
-      pcswitch = digitalRead(localswitchPin);
-      while (pcswitch == 0) {
+    if (timestamp < 1000) {
+      if (timestamp < 900) {
         display.clearDisplay();
-        display.setTextSize(2);
-        display.setTextColor(SSD1306_WHITE);
-        display.setCursor(32, 12);
-        display.println(F("henlo!"));
+        drawkris_inverted();
         display.display();
-        delay(100);
+        /* original code
+           display.setTextSize(2);
+           display.setTextColor(SSD1306_WHITE);
+           display.setCursor(32, 12);
+           display.println(F("ready."));
+           display.display();
+        */
+      } else {
         pcswitch = digitalRead(localswitchPin);
+        drawCenteredText("standby");
       }
-      digitalWrite(pcswitchPin, LOW);
-      commsIn = digitalRead(commsInPin);
-      if (commsIn == 1) {
-        // Not ready to play sound, show error message and continue
-        frame = 0;
-        while (frame < 7) {
-          display.clearDisplay();
-          display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
-          display.display();
-          delay(500);
-          frame++;
-        }
-        frame = 0;
+      timestamp++;
+    }
+    else {
+      if (screensaver == 1) {
+        doClock();
+      }
+      else if (screensaver == 2) {
       }
       else {
-        frame = 0;
-        drawUnoAndNano();
-        digitalWrite(commsOutPin, HIGH);
-        while (commsIn == 0) {
-          if (frame % 87 == 0) {
-            frame = frame - 87;
-            drawUnoAndNano();
-          }
-          display.drawPixel((frame % 87) + 22, 13, BLACK);
-          display.drawPixel((frame % 87) + 23, 13, WHITE);
-          display.drawPixel((frame % 87) + 24, 13, WHITE);
-          display.drawPixel((frame % 87) + 25, 13, WHITE);
-          display.display();
-
-          frame++;
-          commsIn = digitalRead(commsInPin);
+        if (x > 117 || x < 1) {
+          goingright = !goingright;
         }
-        // connection established, playing sound...
-        digitalWrite(commsOutPin, LOW);
-      }
-      delay(250);
+        if (y > 21  || y < 1) {
+          goingup    = !goingup;
+        }
 
-      display.clearDisplay();
-      display.setTextSize(2);
-      display.setTextColor(SSD1306_WHITE);
-      display.setCursor(18, 12);
-      display.println(F("gg, thx."));
-      display.display();
-      delay(1500);
-      timestamp = 0;
+        if (goingright == true) {
+          x = x + 1;
+        } else {
+          x = x - 1;
+        }
+
+        if (goingup == true) {
+          y = y + 1;
+        } else {
+          y = y - 1;
+        }
+
+        display.clearDisplay();
+        display.drawBitmap(x, y, amogus[frame % 6], 10, 10, WHITE);
+        frame++;
+        display.display();
+        delay(30);
+      }
     }
+
+
+
+  } else {
+    Serial.println("pushed");
+
+    digitalWrite(pcswitchPin, HIGH);
+    pcswitch = digitalRead(localswitchPin);
+    while (pcswitch == 0) {
+      drawCenteredText("henlo");
+      delay(100);
+      pcswitch = digitalRead(localswitchPin);
+    }
+    digitalWrite(pcswitchPin, LOW);
+    commsIn = digitalRead(commsInPin);
+    if (commsIn == 1) {
+      // Not ready to play sound, show error message and continue
+      frame = 0;
+      while (frame < 7) {
+        display.clearDisplay();
+        display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
+        display.display();
+        delay(500);
+        frame++;
+      }
+      frame = 0;
+    }
+    else {
+      frame = 0;
+      drawUnoAndNano();
+      digitalWrite(commsOutPin, HIGH);
+      while (commsIn == 0) {
+        if (frame % 87 == 0) {
+          frame = frame - 87;
+          drawUnoAndNano();
+        }
+        display.drawPixel((frame % 87) + 22, 13, BLACK);
+        display.drawPixel((frame % 87) + 23, 13, WHITE);
+        display.drawPixel((frame % 87) + 24, 13, WHITE);
+        display.drawPixel((frame % 87) + 25, 13, WHITE);
+        display.display();
+
+        frame++;
+        commsIn = digitalRead(commsInPin);
+      }
+      // connection established, playing sound...
+      digitalWrite(commsOutPin, LOW);
+    }
+    delay(250);
+
+    drawCenteredText("gg, thx.");
+    delay(1500);
+    timestamp = 0;
   }
+
 }
 
 void drawSplash() {
@@ -1056,6 +1064,7 @@ void drawCenteredText(String str) {
   display.clearDisplay();
   display.setTextColor(SSD1306_WHITE);
   display.setFont(&__comic15pt7b);
+  display.setTextSize(1);
   display.getTextBounds(str, 0, 0, &curX, &curY, &width, &height);  // na pozicích curX a curY to vrací souřadnice spodního levýho rohu, což nepotřebuju, ale ty pozice musej bejt vyplněný, tak používám něco, co pak hned přepíšu
 
   curX = 63 - (width / 2) ;
