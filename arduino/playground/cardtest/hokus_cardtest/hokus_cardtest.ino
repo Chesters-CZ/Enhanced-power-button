@@ -19,23 +19,15 @@ unsigned char pass64[] = {0};
 
 char stringBuffer[MAX_STRING_SIZE];
 
-AESLib aes;
 
-EasyMFRC522 rfid(10, 5);
+AESLib one;
 
 void setup() {
   Serial.begin(9600);
 
-  rfid.init();
-
   Serial.println("Encrypting...");
 
-  aes.set_paddingmode((paddingMode)0);
-
-  uint16_t msgLen = sizeof(pass);
-  uint16_t encLen = aes.encrypt((byte*)pass, msgLen, (byte*)encPass, aes_key, sizeof(aes_key), aes_iv);
-
-  unsigned int b64Len = encode_base64(encPass, strlen((char*) encPass), pass64);
+  // doEncrypt();
 
   String s = pass64;
   Serial.print("Encryption complete : ");
@@ -46,6 +38,9 @@ void loop() {
   Serial.println();
   Serial.println("READY TO WRITE");
 
+  EasyMFRC522 rfid(10, 5);
+  rfid.init();
+
   bool success = false;
   do {
     // returns true if a Mifare tag is detected
@@ -55,16 +50,24 @@ void loop() {
 
   Serial.println("TAG DETECTED!");
 
+  strcpy(stringBuffer, aes_iv);
 
-  // ERROR HERE
-  stringBuffer[MAX_STRING_SIZE];
-  strcpy(stringBuffer, pass64);
-
-  if (rfid.writeFile(BLOCK, "Pass", (byte*)stringBuffer, strlen(stringBuffer) + 1) == 0) {
+  if (rfid.writeFile(BLOCK, "Pass", (byte*)stringBuffer, strlen(stringBuffer) + 1) >= 0) {
     Serial.print("WRITING SUCCESSFUL");
   } else {
-        Serial.print("WRITING FAILED");
+    Serial.print("WRITING FAILED");
   }
 
   delay(500);
+}
+
+void doEncrypt() {
+  AESLib* aes = new AESLib();
+
+  aes->set_paddingmode((paddingMode)0);
+
+  uint16_t msgLen = sizeof(pass);
+  uint16_t encLen = aes->encrypt((byte*)pass, msgLen, (byte*)encPass, aes_key, sizeof(aes_key), aes_iv);
+
+  unsigned int b64Len = encode_base64(encPass, strlen((char*) encPass), pass64);
 }
