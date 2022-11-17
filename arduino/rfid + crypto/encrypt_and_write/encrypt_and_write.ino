@@ -16,7 +16,7 @@ const byte PROGMEM aes_iv[] = { 0x77, 0x77, 0x77, 0x2e, 0x63, 0x68, 0x65, 0x73, 
 
 #define BLOCK 1
 
-uint8_t encPass[] = {0};
+uint8_t encPass[255] = {0};
 unsigned char pass64[255];
 unsigned int b64Len;
 

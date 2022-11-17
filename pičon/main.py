@@ -20,14 +20,14 @@ def log(string):
 
 
 def awaitK():
-    time.sleep(0.5)
+    log(getTime() + " Awaiting 'k'...")
     screenInoMsg = arduino[screenAt].readline()
     log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
     while (screenInoMsg != b"k"):
-        time.sleep(0.25)
         screenInoMsg = arduino[screenAt].readline()
         log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
-
+        time.sleep(0.25)
+    log(getTime() + " Receieved 'k'")
 
 ports = serial.tools.list_ports.comports()
 file2 = open(os.environ['USERPROFILE'] + '\\enhanced-power-button-config.txt', 'r')
@@ -106,8 +106,10 @@ match (file2.read()):
         awaitK()
         rn = datetime.datetime.now()
         arduino[screenAt].write(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
+        log(getTime() + " Čas odeslán: " + ((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__())
         awaitK()
-        arduino[screenAt].write("" + rn.strftime("%Y-%m-%d"))
+        arduino[screenAt].write(str.encode(rn.strftime("%Y-%m-%d")))
+        log(getTime() + " Datum odesláno: " + rn.strftime("%Y-%m-%d"))
 
 while True:
     i = 0
