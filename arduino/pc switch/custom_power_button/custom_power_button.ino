@@ -983,12 +983,13 @@ void setup() {
         monthAtStart = atol(incString.substring(5, 7).c_str());
         dayAtStart = atol(incString.substring(8, 10).c_str());
         Serial.println("Date parsed as: " + String(yearAtStart) + "." + String(monthAtStart) + "." + String(dayAtStart));
-
-        display.clearDisplay();
-        drawPcSuccess();
-        display.display();
     }
 
+    delay(250);
+
+    display.clearDisplay();
+    drawPcSuccess();
+    display.display();
   }
   else {
     display.clearDisplay();
@@ -1381,7 +1382,6 @@ void drawPcSuccess() {
   drawPc(true);
   display.drawBitmap(55, 13, checkmark_shadow, 10, 11, BLACK);
   display.drawBitmap(55, 13, checkmark, 10, 11, WHITE);
-
 }
 
 void testdrawstyles(void) {

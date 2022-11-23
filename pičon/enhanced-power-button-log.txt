@@ -66050,3 +66050,110 @@ COM10@22:26:19: 80, 33, 22, 47, 26
 COM10@22:26:21: 807, 51, 22, 38, 26
 22:26:23 Pøijato Ctrl+C.
 
+Script spuštìn v 2022-11-23 22:30:36
+Dostupné COM porty jsou:
+COM1: Komunikaèní port (COM1)  [ACPI\PNP0501\0]
+COM3: USB-SERIAL CH340 (COM3)  [USB VID:PID=1A86:7523 SER= LOCATION=1-2]
+COM10: USB-SERIAL CH340 (COM10)  [USB VID:PID=1A86:7523 SER= LOCATION=1-3]
+22:30:36 Zkouším se pøipojit na COM1 (Komunikaèní port (COM1) )
+22:30:36 Zkouším se pøipojit na COM3 (USB-SERIAL CH340 (COM3) )
+22:30:36 Zkouším se pøipojit na COM10 (USB-SERIAL CH340 (COM10) )
+22:30:36 Kontroluji seznam arduin. Pokus 0
+22:30:36 Kontroluji arduino 0
+COM3@22:30:37: 
+22:30:37 Kontroluji arduino 1
+COM10@22:30:38: 
+22:30:38 Kontroluji arduino 2
+COM1@22:30:39: 
+22:30:40 Kontroluji seznam arduin. Pokus 1
+22:30:40 Kontroluji arduino 0
+COM3@22:30:41: 
+22:30:41 Kontroluji arduino 1
+COM10@22:30:42: Screen module
+22:30:42: Nalezeno arduino s obrazovkou
+22:30:42 Arduino bude ukazovat èas
+22:30:42 Awaiting 'k'...
+COM10@22:30:43: k
+22:30:43 Receieved 'k'
+b'81043'
+22:30:43 Pøecházím na pasivní mód
+COM10@22:30:44: 8, 14, 22, 56, 26
+COM10@22:30:46: 81, 27, 22, 50, 26
+COM10@22:30:48: 810, 46, 22, 40, 26
+COM10@22:30:50: 8104, 64, 22, 31, 26
+COM10@22:30:52: 81043, 80, 22, 23, 26
+COM10@22:30:54: final value is 81043
+COM10@22:30:56: 22:30:48, 122, 22, 2, 26
+COM10@22:30:58: 22:30:48, 122, 22, 2, 26
+COM10@22:31:00: 22:30:48, 122, 22, 2, 26
+COM10@22:31:02: 22:30:48, 122, 22, 2, 26
+COM10@22:31:04: 22:30:48, 122, 22, 2, 26
+COM10@22:31:06: 22:30:48, 122, 22, 2, 26
+COM10@22:31:09: 22:30:48, 122, 22, 2, 26
+COM10@22:31:11: 22:30:48, 122, 22, 2, 26
+COM10@22:31:13: 22:30:48, 122, 22, 2, 26
+COM10@22:31:15: 22:30:48, 122, 22, 2, 26
+COM10@22:31:17: 22:30:48, 122, 22, 2, 26
+COM10@22:31:19: 22:30:48, 122, 22, 2, 26
+COM10@22:31:21: 22:30:48, 122, 22, 2, 26
+COM10@22:31:23: 22:30:48, 122, 22, 2, 26
+COM10@22:31:25: 22:30:48, 122, 22, 2, 26
+22:31:27 Pøijato Ctrl+C.
+
+Script spuštìn v 2022-11-23 22:32:02
+Dostupné COM porty jsou:
+COM1: Komunikaèní port (COM1)  [ACPI\PNP0501\0]
+COM3: USB-SERIAL CH340 (COM3)  [USB VID:PID=1A86:7523 SER= LOCATION=1-2]
+COM10: USB-SERIAL CH340 (COM10)  [USB VID:PID=1A86:7523 SER= LOCATION=1-3]
+22:32:02 Zkouším se pøipojit na COM1 (Komunikaèní port (COM1) )
+22:32:02 Zkouším se pøipojit na COM3 (USB-SERIAL CH340 (COM3) )
+22:32:02 Zkouším se pøipojit na COM10 (USB-SERIAL CH340 (COM10) )
+22:32:02 Kontroluji seznam arduin. Pokus 0
+22:32:02 Kontroluji arduino 0
+COM3@22:32:03: 
+22:32:03 Kontroluji arduino 1
+COM10@22:32:04: 
+22:32:04 Kontroluji arduino 2
+COM1@22:32:05: 
+22:32:06 Kontroluji seznam arduin. Pokus 1
+22:32:06 Kontroluji arduino 0
+COM3@22:32:07: 
+22:32:07 Kontroluji arduino 1
+COM10@22:32:08: Screen module
+22:32:08: Nalezeno arduino s obrazovkou
+22:32:08 Arduino bude ukazovat èas
+22:32:08 Awaiting 'k'...
+COM10@22:32:09: k
+22:32:09 Receieved 'k'
+b'81129'
+22:32:09 Pøecházím na pasivní mód
+COM10@22:32:10: 8, 14, 22, 56, 26
+COM10@22:32:12: 81, 27, 22, 50, 26
+COM10@22:32:14: 811, 40, 22, 43, 26
+COM10@22:32:16: 8112, 58, 22, 34, 26
+COM10@22:32:18: 81129, 76, 23, 25, 26
+COM10@22:32:20: final value is 81129
+COM10@22:32:22: 22:32:14, 118, 22, 4, 26
+COM10@22:32:24: 22:32:14, 118, 22, 4, 26
+COM10@22:32:26: 22:32:14, 118, 22, 4, 26
+COM10@22:32:28: 22:32:14, 118, 22, 4, 26
+COM10@22:32:30: 22:32:14, 118, 22, 4, 26
+COM10@22:32:32: 22:32:14, 118, 22, 4, 26
+COM10@22:32:35: 22:32:14, 118, 22, 4, 26
+COM10@22:32:37: 22:32:14, 118, 22, 4, 26
+COM10@22:32:39: 22:32:14, 118, 22, 4, 26
+COM10@22:32:41: 22:32:14, 118, 22, 4, 26
+COM10@22:32:43: 22:32:14, 118, 22, 4, 26
+COM10@22:32:45: 22:32:14, 118, 22, 4, 26
+COM10@22:32:47: 22:32:14, 118, 22, 4, 26
+COM10@22:32:49: 22:32:14, 118, 22, 4, 26
+COM10@22:32:51: 22:32:14, 118, 22, 4, 26
+COM10@22:32:53: 22:32:14, 118, 22, 4, 26
+COM10@22:32:55: 22:32:14, 118, 22, 4, 26
+COM10@22:32:57: 22:32:14, 118, 22, 4, 26
+COM10@22:32:59: 22:32:14, 118, 22, 4, 26
+COM10@22:33:01: 22:32:14, 118, 22, 4, 26
+COM10@22:33:03: 22:32:14, 118, 22, 4, 26
+COM10@22:33:05: 22:32:14, 118, 22, 4, 26
+22:33:07 Pøijato Ctrl+C.
+
