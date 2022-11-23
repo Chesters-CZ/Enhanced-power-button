@@ -6,6 +6,7 @@ import time
 import getpass
 import serial.tools.list_ports
 import serial.tools.list_ports
+from serial import SerialException
 
 
 def getTime():
@@ -28,6 +29,7 @@ def awaitK():
         log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
         time.sleep(0.25)
     log(getTime() + " Receieved 'k'")
+
 
 ports = serial.tools.list_ports.comports()
 file2 = open(os.environ['USERPROFILE'] + '\\enhanced-power-button-config.txt', 'r')
@@ -53,11 +55,18 @@ for prt, desc, hwid in sorted(ports):
             arduino.append(temp)
 
         connected.append(True)
-    except():
-        if (arduino.__sizeof__() != 0):
-            arduino.append = False
-        log(getTime() + " Nastala chyba při připojování k " + "{}: {} [{}]".format(prt, desc, hwid))
-        connected.append(False)
+    except Exception as e:
+        try:
+            if (arduino.__sizeof__() != 0):
+                arduino.append(False)
+            log(getTime() + " Nastala chyba při připojování k " + "{}: {} [{}]".format(prt, desc, hwid)
+                + " : " + e.__str__())
+            log("")
+            connected.append(False)
+        except Exception as eFatal:
+            log(getTime() + " Nastala chyba při pokusu zotavit se z chyby: " + eFatal.__str__())
+            log("")
+            exit(-2)
 
 i = 0
 found = False
@@ -111,10 +120,22 @@ match (file2.read()):
         arduino[screenAt].write(str.encode(rn.strftime("%Y-%m-%d")))
         log(getTime() + " Datum odesláno: " + rn.strftime("%Y-%m-%d"))
 
-while True:
-    i = 0
-    for a in arduino:
-        inp = a.readline()
-        if (inp.__len__() > 0):
-            log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8'))
-        i = i + 1
+log(getTime() + " Přecházím na pasivní mód")
+
+try:
+    while True:
+        i = 0
+        for a in arduino:
+            if (connected[i]):
+                inp = a.readline()
+                if (inp.__len__() > 0):
+                    log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8').replace("\n", ""))
+                i = i + 1
+
+except KeyboardInterrupt as e:
+    log(getTime() + " Přijato Ctrl+C.")
+    log("")
+    exit(0)
+except Exception as e:
+    log(getTime() + " Nastala chyba: " + e.__str__())
+    log("")
