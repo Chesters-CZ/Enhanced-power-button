@@ -35,7 +35,7 @@ void loop() {
   Serial.println("TAG DETECTED!");
 
   if (rfid.readFile(BLOCK, "Pass", (byte*)cardContent, 512) >= 0) {
-    Serial.print("READING SUCCESSFUL");
+    Serial.print("READING SUCCESSFUL ");
     String s = cardContent;
     Serial.print(s);
   } else {
