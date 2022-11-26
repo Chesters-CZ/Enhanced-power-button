@@ -49,13 +49,13 @@ void loop() {
 
 memcpy(encPass, decoded, sizeof(decoded));
 
-  if (aes.setKey((int)aes_key, sizeof(aes_key))) {
+  if (aes.setKey(aes_key, sizeof(aes_key))) {
     Serial.println("Setting key succeeded");
   } else {
     Serial.println("An error occured");
   }
 
-  aes.decryptBlock(pass, encPass);
+  aes.decryptBlock(pass, decoded);
 
   Serial.print("Password decoded: ");
   String s = pass;

@@ -5,18 +5,17 @@
 #include "EasyMFRC522.h"
 
 // Heslo k zašifrování
-const char PROGMEM pass[] = "UltraSuperSecret69_!";
+const char   pass[] = "UltraSuperSecret69_!";
 
 EasyMFRC522 mfr(10, 5);
 
-AESTiny128 aes;
+AESSmall128 aes;
 
-const byte PROGMEM aes_key[] = { 0x34, 0x34, 0x32, 0x38, 0x34, 0x37, 0x32, 0x42, 0x34, 0x42, 0x36, 0x32, 0x35, 0x30, 0x36, 0x35 };
-const byte PROGMEM aes_iv[] = { 0x77, 0x77, 0x77, 0x2e, 0x63, 0x68, 0x65, 0x73, 0x74, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x7a, 0x21 };
+const byte   aes_key[] = { 0x34, 0x34, 0x32, 0x38, 0x34, 0x37, 0x32, 0x42, 0x34, 0x42, 0x36, 0x32, 0x35, 0x30, 0x36, 0x35 };
 
 #define BLOCK 1
 
-uint8_t encPass[255] = {0};
+uint8_t encPass[32] = {0};
 unsigned char pass64[255];
 unsigned int b64Len;
 
@@ -37,10 +36,12 @@ void setup() {
   Serial.flush();
   aes.encryptBlock(encPass, pass);
   Serial.println(F("encryption over"));
+  String s = encPass;
+  Serial.println(s);
 
-  b64Len = encode_base64(encPass, strlen((char*) encPass), pass64);
+  b64Len = encode_base64(encPass, sizeof(encPass), pass64);
 
-  String s = pass64;
+  s = pass64;
 
   Serial.print(F("Encryption complete ("));
   Serial.print(b64Len);
