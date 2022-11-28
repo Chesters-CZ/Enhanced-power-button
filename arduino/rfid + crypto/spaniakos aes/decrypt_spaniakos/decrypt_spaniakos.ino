@@ -3,6 +3,7 @@
 #include <printf.h>
 #include "base64.hpp"
 #include "EasyMFRC522.h"
+#include <Keyboard.h>
 
 
 AES aes;
@@ -26,6 +27,7 @@ void setup() {
   printf_begin();
   delay(500);
   rfid.init();
+  Keyboard.begin();
 }
 
 void loop() {
@@ -36,17 +38,8 @@ void prectiADesifruj (int bits)
 {
   aes.iv_inc();
   byte iv [N_BLOCK] ;
-  byte plain_p[padedLength];
   byte cipher [padedLength] ;
   byte check [padedLength] ;
-  /*
-    unsigned long ms = micros ();
-    aes.set_IV(my_iv);
-    aes.get_IV(iv);
-    aes.do_aes_encrypt(plain, plainLength, cipher, key, bits, iv);
-    Serial.print("Encryption took: ");
-    Serial.println(micros() - ms);
-  */
 
   char pass64[64] = {0};
 
@@ -62,30 +55,25 @@ void prectiADesifruj (int bits)
 
 
   Serial.println(F("TAG DETECTED!"));
-
+  Serial.print(F("READING PASSWORD "));
   if (rfid.readFile(1, "Pass", (byte*)pass64, 64) >= 0) {
-    Serial.print("READING SUCCESSFUL ");
+    Serial.print(F("SUCCESS"));
     String s = pass64;
-    Serial.print(s);
+    Serial.println(s);
+
+    decode_base64(pass64, cipher);
+
+    aes.set_IV(my_iv);
+    aes.get_IV(iv);
+    aes.do_aes_decrypt(cipher, padedLength, check, key, bits, iv);
+
+    String result = check;
+    Serial.println(result);
+    Keyboard.print(result);
   } else {
     Serial.print("READING FAILED");
   }
-decode_base64(pass64, cipher);
+
   rfid.unselectMifareTag();
   delay(3000);
-
-
-  unsigned long   ms = micros ();
-  aes.set_IV(my_iv);
-  aes.get_IV(iv);
-  aes.do_aes_decrypt(cipher, padedLength, check, key, bits, iv);
-  Serial.print("Decryption took: ");
-  Serial.println(micros() - ms);
-  printf("\nCIPHER:");
-  aes.printArray(cipher, (bool)false);
-  printf("\nCHECK :");
-  aes.printArray(check, (bool)true);
-  printf("\nIV    :");
-  aes.printArray(iv, 16);
-  printf("\n============================================================\n");
 }
