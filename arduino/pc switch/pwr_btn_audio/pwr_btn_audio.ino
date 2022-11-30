@@ -16,22 +16,24 @@ void setup() {
   pinMode(commsInPin, INPUT_PULLUP);
   Serial.begin(9600);
 
+  randomSeed( analogRead(A0));
+
   tmrpcm.speakerPin = 9; //5,6,11 or 46 on Mega, 9 on Uno, Nano, etc
+  tmrpcm.setVolume(5);
 }
 
 void loop() {
   while (true) {
-  digitalWrite(commsOutPin, HIGH);
+    digitalWrite(commsOutPin, HIGH);
     commsIn = digitalRead(commsInPin);
     // pcswitch = 0 if pushed, 1 if released
 
     if (commsIn == 0) {
       digitalWrite(commsOutPin, LOW);
-      Serial.println(F("starting sd card ops"));
+      Serial.println(F("Received signal"));
       tmrpcm.stopPlayback();
       if (SD.begin(SD_ChipSelectPin)) {  // see if the card is present and can be initialized:
-        tmrpcm.setVolume(5);
-        switch (round(random(45) - 1)) {
+        switch (random(45)) {
           case 0:
             tmrpcm.play("startup.wav");
             Serial.println(F("Played track 1"));
