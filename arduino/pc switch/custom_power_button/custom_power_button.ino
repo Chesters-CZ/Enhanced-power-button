@@ -1120,13 +1120,13 @@ void loop() {
       frame = 0;
     } else {
       frame = 89;
-      drawNanoAndNano();
+      display.clearDisplay();
+      drawContactingNano();
       display.display();
       digitalWrite(commsOutPin, HIGH);
       while (commsIn == 0) {
         if (frame % 89 == 0) {
-          frame = frame - 89;
-          drawNanoAndNano();
+          drawContactingNano();
           display.display();
         }
         display.drawPixel((frame % 89) + 18, 13, BLACK);
@@ -1336,9 +1336,12 @@ void testdrawchar(void) {
 }
 
 void drawNanoAndNano() {
-  display.clearDisplay();
   display.drawBitmap(7, 4, nano, 15, 17, WHITE);
   display.drawBitmap(110, 4, nano, 11, 18, WHITE);
+}
+
+void drawContactingNano(){
+  drawNanoAndNano();
   display.setTextSize(1);
   display.setCursor(18, 24);
   display.println(F("contacting nano"));
