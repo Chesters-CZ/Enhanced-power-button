@@ -21,6 +21,7 @@ unsigned long long int my_iv = 22176790;
 int plainLength = sizeof(plain) - 1; // nepočítat null terminator
 int padedLength = plainLength + N_BLOCK - plainLength % N_BLOCK; // ???
 
+int block = 1;
 
 void setup() {
   Serial.begin (9600);
@@ -33,7 +34,24 @@ void setup() {
 }
 
 void loop() {
+  if(sizeof(key)=16){
   sifrujAZapis(128);
+  }
+  else if (sizeof(key) = 24){
+    sifrujAZapis(192)
+  }
+  else if (sizeof(key) = 32){
+    sifrujAZapis(256)
+  }
+  else{
+    Serial.print("ZVOLENA NEPLATNÁ DÉLKA KLÍČE (");
+    Serial.print(sizeof(key));
+    Serial.println(")");
+    Serial.println("PODPOROVANÉ DÉLKY KLÍČE JSOU:");
+    Serial.println("16 ZNAKŮ PRO AES128 (VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+    Serial.println("24 ZNAKŮ PRO AES192 (VELMI VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+    Serial.println("32 ZNAKŮ PRO AES256 (EXTRÉMNĚ VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+  }
 }
 
 void sifrujAZapis (int bits)
@@ -53,7 +71,11 @@ void sifrujAZapis (int bits)
   char pass64[64] = {0};
   byte b64Length = encode_base64(cipher, padedLength, pass64);
 
-Serial.println(pass64);
+  for (int i = b64Length; i <64; i++){
+    pass64[i] = '=';
+  }
+
+  Serial.println(pass64);
 
   Serial.println();
   Serial.println(F("READY TO WRITE"));
@@ -66,13 +88,27 @@ Serial.println(pass64);
   } while (!success);
 
 
-  Serial.println(F("TAG DETECTED!"));
+  Serial.println(F("WRITING PASSWORD..."));
+  block = 1;
+  block = rfid.writeFile(block, "Pass", (byte*)pass64, b64Length);
+  if (block >= 0) {
+    Serial.println(F("WRITING SUCCESSFUL"));
+    Serial.print(block);
+    Serial.println(F("WRITING LENGTH..."));
 
-  if (rfid.writeFile(1, "Pass", (byte*)pass64, b64Length) >= 0) {
-    Serial.print(F("WRITING SUCCESSFUL"));
+    block = rfid.writeFile(60, "PLen", b64Length, sizeof(b64Length));
+
+    if (block >= 0) {
+
+      Serial.println(F("WRITING SUCCESSFUL"));
+      Serial.print(block);
+    } else {
+      Serial.print(F("WRITING FAILED"));
+      Serial.print(block);
+    }
   } else {
     Serial.print(F("WRITING FAILED"));
-    Serial.print(rfid.writeFile(1, "Pass", (byte*)pass64, b64Length));
+    Serial.print(block);
   }
 
   rfid.unselectMifareTag();
