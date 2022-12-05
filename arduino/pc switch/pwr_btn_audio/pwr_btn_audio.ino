@@ -16,7 +16,7 @@ void setup() {
   pinMode(commsInPin, INPUT_PULLUP);
   Serial.begin(9600);
 
-  randomSeed( analogRead(A0));
+  randomSeed(analogRead(A0));
 
   tmrpcm.speakerPin = 9; //5,6,11 or 46 on Mega, 9 on Uno, Nano, etc
   tmrpcm.setVolume(5);
