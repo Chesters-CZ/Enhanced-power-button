@@ -31,7 +31,29 @@ void setup() {
 }
 
 void loop() {
-  prectiADesifruj(128);
+  String y = key;
+  if (y.length() == 16) {
+    prectiADesifruj(128);
+  }
+  else if (y.length() == 24) {
+    prectiADesifruj(192);
+  }
+  else if (y.length() == 32) {
+    prectiADesifruj(256);
+  }
+  else {
+    Serial.print("ZVOLENA NEPLATNÁ DÉLKA KLÍČE (");
+    Serial.print(sizeof(key));
+    Serial.println(")");
+    Serial.println("PODPOROVANÉ DÉLKY KLÍČE JSOU:");
+    Serial.println("16 ZNAKŮ PRO AES128 (VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+    Serial.println("24 ZNAKŮ PRO AES192 (VELMI VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+    Serial.println("32 ZNAKŮ PRO AES256 (EXTRÉMNĚ VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+    
+    while (true) {
+    }
+
+  }
 }
 
 void prectiADesifruj (int bits)
@@ -42,6 +64,7 @@ void prectiADesifruj (int bits)
   byte check [padedLength] ;
 
   char pass64[64] = {0};
+  char passLen[4] = {0};
 
   Serial.println();
   Serial.println(F("READY TO READ"));
@@ -57,9 +80,21 @@ void prectiADesifruj (int bits)
   Serial.println(F("TAG DETECTED!"));
   Serial.print(F("READING PASSWORD "));
   if (rfid.readFile(1, "Pass", (byte*)pass64, 64) >= 0) {
-    Serial.print(F("SUCCESS"));
+    Serial.println(F("SUCCESS"));
     String s = pass64;
     Serial.println(s);
+
+    Serial.print(F("READING LENGTH "));
+    int block = rfid.readFile(55, "PLen", (byte*)passLen, 64);
+    if (block >= 0) {
+      Serial.println(F("SUCCESS"));
+      s = passLen;
+      Serial.println(s);
+    }
+    else {
+      Serial.print("READING FAILED");
+      Serial.println(block);
+    }
 
     decode_base64(pass64, cipher);
 
@@ -67,7 +102,11 @@ void prectiADesifruj (int bits)
     aes.get_IV(iv);
     aes.do_aes_decrypt(cipher, padedLength, check, key, bits, iv);
 
+s = passLen;
+
+    Serial.println(s.toInt());
     String result = check;
+    result = result.substring(0, s.toInt());
     Serial.println(result);
     Keyboard.print(result);
   } else {

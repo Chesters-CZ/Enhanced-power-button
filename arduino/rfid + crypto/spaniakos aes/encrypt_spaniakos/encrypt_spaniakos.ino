@@ -34,16 +34,18 @@ void setup() {
 }
 
 void loop() {
-  if(sizeof(key)=16){
-  sifrujAZapis(128);
+  
+    String y = key;
+  if (y.length() == 16) {
+    sifrujAZapis(128);
   }
-  else if (sizeof(key) = 24){
-    sifrujAZapis(192)
+  else if (y.length() == 24) {
+    sifrujAZapis(192);
   }
-  else if (sizeof(key) = 32){
-    sifrujAZapis(256)
+  else if (y.length() == 32) {
+    sifrujAZapis(256);
   }
-  else{
+  else {
     Serial.print("ZVOLENA NEPLATNÁ DÉLKA KLÍČE (");
     Serial.print(sizeof(key));
     Serial.println(")");
@@ -51,6 +53,10 @@ void loop() {
     Serial.println("16 ZNAKŮ PRO AES128 (VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
     Serial.println("24 ZNAKŮ PRO AES192 (VELMI VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
     Serial.println("32 ZNAKŮ PRO AES256 (EXTRÉMNĚ VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
+
+    while (true) {
+    }
+    
   }
 }
 
@@ -71,7 +77,7 @@ void sifrujAZapis (int bits)
   char pass64[64] = {0};
   byte b64Length = encode_base64(cipher, padedLength, pass64);
 
-  for (int i = b64Length; i <64; i++){
+  for (int i = b64Length; i < 64; i++) {
     pass64[i] = '=';
   }
 
@@ -95,8 +101,8 @@ void sifrujAZapis (int bits)
     Serial.println(F("WRITING SUCCESSFUL"));
     Serial.print(block);
     Serial.println(F("WRITING LENGTH..."));
-
-    block = rfid.writeFile(60, "PLen", b64Length, sizeof(b64Length));
+String s = plain;
+    block = rfid.writeFile(55, "PLen", (byte*)String(s.length()).c_str(), sizeof(String(b64Length)));
 
     if (block >= 0) {
 
