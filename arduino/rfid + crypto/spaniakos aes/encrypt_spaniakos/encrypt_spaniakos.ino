@@ -23,6 +23,13 @@ int padedLength = plainLength + N_BLOCK - plainLength % N_BLOCK; // ???
 
 int block = 1;
 
+byte noIn = 2;
+byte yesPin = 3;
+byte noPin = 4;
+byte yesIn = 6;
+
+bool answer;
+
 void setup() {
   Serial.begin (9600);
   while (!Serial) {
@@ -34,16 +41,45 @@ void setup() {
 }
 
 void loop() {
-  
-    String y = key;
+  pinMode(noIn, OUTPUT);
+  pinMode(yesIn, OUTPUT);
+  pinMode(yesPin, INPUT_PULLUP);
+  pinMode(noPin, INPUT_PULLUP);
+
+  digitalWrite(noIn, HIGH);
+  digitalWrite(yesIn, HIGH);
+
+  Serial.println("PŘIPRAVUJI SE NA ZAPSÁNÍ HESLA...");
+  Serial.println("ZAMKNE TENTO ČIP POČÍTAČ PO PŘERUŠENÍ SPOJENÍ?");
+  Serial.println("TLAČÍTKO U ZELENÉ LED: ANO");
+  Serial.println("TLAČÍTKO U ČERVENÉ LED: NE");
+  Serial.println();
+
+  while (digitalRead(yesPin) && digitalRead(noPin)) {
+  }
+
+  if (!digitalRead(yesPin)) {
+    answer = true;
+    digitalWrite(noIn, LOW);
+    Serial.println("ČIP ZAMKNE POČÍTAČ PO PŘERUŠENÍ SPOJENÍ");
+  } else if (!digitalRead(noPin)) {
+    answer = false;
+    digitalWrite(yesIn, LOW);
+    Serial.println("ČIP NEZAMKNE POČÍTAČ PO PŘERUŠENÍ SPOJENÍ");
+  } else {
+    Serial.println("STALA SE CHYBA");
+    return;
+  }
+
+  String y = key;
   if (y.length() == 16) {
-    sifrujAZapis(128);
+    sifrujAZapis(128, answer);
   }
   else if (y.length() == 24) {
-    sifrujAZapis(192);
+    sifrujAZapis(192, answer);
   }
   else if (y.length() == 32) {
-    sifrujAZapis(256);
+    sifrujAZapis(256, answer);
   }
   else {
     Serial.print("ZVOLENA NEPLATNÁ DÉLKA KLÍČE (");
@@ -56,11 +92,16 @@ void loop() {
 
     while (true) {
     }
-    
   }
+
+
+  digitalWrite(noIn, LOW);
+  digitalWrite(yesIn, LOW);
+
+  delay(3000);
 }
 
-void sifrujAZapis (int bits)
+void sifrujAZapis (int bits, bool willLogOffOnRemoved)
 {
   aes.iv_inc();
   byte iv [N_BLOCK] ;
@@ -94,20 +135,35 @@ void sifrujAZapis (int bits)
   } while (!success);
 
 
-  Serial.println(F("WRITING PASSWORD..."));
-  block = 1;
-  block = rfid.writeFile(block, "Pass", (byte*)pass64, b64Length);
+  Serial.println(F("WRITING PASSWORD... "));
+  block = rfid.writeFile(1, "Pass", (byte*)pass64, b64Length);
   if (block >= 0) {
     Serial.println(F("WRITING SUCCESSFUL"));
     Serial.print(block);
-    Serial.println(F("WRITING LENGTH..."));
-String s = plain;
-    block = rfid.writeFile(55, "PLen", (byte*)String(s.length()).c_str(), sizeof(String(b64Length)));
+    Serial.println(F("WRITING LENGTH... "));
+    String s = plain;
+    block = rfid.writeFile(40, "PLen", (byte*)String(s.length()).c_str(), sizeof(String(b64Length)));
 
     if (block >= 0) {
-
       Serial.println(F("WRITING SUCCESSFUL"));
       Serial.print(block);
+
+      Serial.println(F("WRITING LOGOFF PREFERENCE... "));
+
+      if (willLogOffOnRemoved) {
+        block = rfid.writeFile(50, "LogOff", "true", sizeof("true"));
+      } else {
+        block = rfid.writeFile(50, "LogOff", "fals", sizeof("fals"));
+      }
+
+      if (block >= 0) {
+        Serial.println(F("WRITING SUCCESSFUL"));
+        Serial.print(block);
+      }  else {
+        Serial.print(F("WRITING FAILED"));
+        Serial.print(block);
+      }
+
     } else {
       Serial.print(F("WRITING FAILED"));
       Serial.print(block);
@@ -118,7 +174,6 @@ String s = plain;
   }
 
   rfid.unselectMifareTag();
-  delay(3000);
 
   /*
     ms = micros ();

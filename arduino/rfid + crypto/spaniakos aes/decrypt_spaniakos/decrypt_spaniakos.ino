@@ -1,9 +1,10 @@
+
 #include <AES.h>
 #include <AES_config.h>
 #include <printf.h>
 #include "base64.hpp"
 #include "EasyMFRC522.h"
-#include <Keyboard.h>
+#include <CzechKeyboard_QWERTZ.h>
 
 
 AES aes;
@@ -49,7 +50,7 @@ void loop() {
     Serial.println("16 ZNAKŮ PRO AES128 (VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
     Serial.println("24 ZNAKŮ PRO AES192 (VELMI VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
     Serial.println("32 ZNAKŮ PRO AES256 (EXTRÉMNĚ VYSOKÁ ÚROVEŇ ZABEZPEČENÍ)");
-    
+
     while (true) {
     }
 
@@ -65,6 +66,11 @@ void prectiADesifruj (int bits)
 
   char pass64[64] = {0};
   char passLen[4] = {0};
+  char logOffPref[5] = {0};
+
+  String s;
+  int block = 0;
+  int newBlock;
 
   Serial.println();
   Serial.println(F("READY TO READ"));
@@ -76,20 +82,36 @@ void prectiADesifruj (int bits)
     delay(50); //0.05s
   } while (!success);
 
+  delay(100); // Ensures the chip is close enough
+
 
   Serial.println(F("TAG DETECTED!"));
-  Serial.print(F("READING PASSWORD "));
-  if (rfid.readFile(1, "Pass", (byte*)pass64, 64) >= 0) {
+  Serial.print(F("READING PASSWORD... "));
+  block = rfid.readFile(1, "Pass", (byte*)pass64, 64);
+  if (block >= 0) {
     Serial.println(F("SUCCESS"));
-    String s = pass64;
+    s = pass64;
     Serial.println(s);
 
-    Serial.print(F("READING LENGTH "));
-    int block = rfid.readFile(55, "PLen", (byte*)passLen, 64);
+    Serial.print(F("READING LENGTH... "));
+    block = rfid.readFile(40, "PLen", (byte*)passLen, 64);
     if (block >= 0) {
       Serial.println(F("SUCCESS"));
       s = passLen;
       Serial.println(s);
+
+      Serial.print(F("READING LOGOFF PREFERENCE... "));
+      newBlock = rfid.readFile(50, "LogOff", (byte*)logOffPref, 64);
+      if (newBlock >= 0) {
+        Serial.println(F("SUCCESS"));
+        s = passLen;
+        Serial.println(s);
+      }
+      else {
+        Serial.print("READING FAILED");
+        Serial.println(newBlock);
+      }
+
     }
     else {
       Serial.print("READING FAILED");
@@ -102,7 +124,7 @@ void prectiADesifruj (int bits)
     aes.get_IV(iv);
     aes.do_aes_decrypt(cipher, padedLength, check, key, bits, iv);
 
-s = passLen;
+    s = passLen;
 
     Serial.println(s.toInt());
     String result = check;
@@ -110,7 +132,28 @@ s = passLen;
     Serial.println(result);
     Keyboard.print(result);
   } else {
-    Serial.print("READING FAILED");
+    Serial.print("READING FAILED ");
+    Serial.println(block);
+  }
+
+  s = logOffPref;
+  if (s.charAt(0) == 't') {
+    String s1;
+
+    do {
+      newBlock = rfid.readFile(50, "LogOff", (byte*)logOffPref, 64);
+      s1 = logOffPref;
+    } while (s.equals(s1) && newBlock >= 0);
+
+    if (!s.equals(s1))
+      Serial.println("CONDITION 1");
+    if (!newBlock >= 0)
+      Serial.println("CONDITION 2");
+
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('l');
+    delay(25);
+    Keyboard.releaseAll();
   }
 
   rfid.unselectMifareTag();
