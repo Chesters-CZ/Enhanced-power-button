@@ -177,13 +177,13 @@ const unsigned char  checkmark_shadow [] PROGMEM = {
 
 // 'button pushed big', 32x32px
 const unsigned char  button_pushed_big [] PROGMEM = {
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0x20, 
-  0x00, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20, 
-  0x01, 0x00, 0x20, 0x20, 0x01, 0x00, 0x20, 0x20, 0x01, 0x00, 0x60, 0x60, 0x01, 0x00, 0x60, 0x40, 
-  0x09, 0x20, 0xa0, 0x40, 0x05, 0x41, 0x20, 0x40, 0x03, 0x82, 0x20, 0x40, 0x01, 0x04, 0x20, 0x80, 
-  0x00, 0x08, 0x40, 0x80, 0x00, 0x10, 0x81, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00, 0x5c, 0x02, 0x00, 
-  0x00, 0x40, 0x04, 0x00, 0x00, 0x40, 0x08, 0x00, 0x00, 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xff, 0xff, 0xe0, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0x20, 0x00, 0x00, 0x10, 0x20,
+  0x00, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20, 0x01, 0x00, 0x10, 0x20,
+  0x01, 0x00, 0x20, 0x20, 0x01, 0x00, 0x20, 0x20, 0x01, 0x00, 0x60, 0x60, 0x01, 0x00, 0x60, 0x40,
+  0x09, 0x20, 0xa0, 0x40, 0x05, 0x41, 0x20, 0x40, 0x03, 0x82, 0x20, 0x40, 0x01, 0x04, 0x20, 0x80,
+  0x00, 0x08, 0x40, 0x80, 0x00, 0x10, 0x81, 0x00, 0x00, 0x23, 0x02, 0x00, 0x00, 0x5c, 0x02, 0x00,
+  0x00, 0x40, 0x04, 0x00, 0x00, 0x40, 0x08, 0x00, 0x00, 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0xff, 0xff, 0xe0,
   0x04, 0x00, 0x00, 0x20, 0x04, 0x00, 0x00, 0x20, 0x3f, 0xff, 0xff, 0xfc, 0x00, 0x00, 0x00, 0x00
 };
 
@@ -879,6 +879,7 @@ byte monthAtStart;
 byte dayAtStart;
 byte repeats;
 bool informedOfVerboseTimeout = false;
+byte verboseReportCount = 0;
 
 void setup() {
   pinMode(pcswitchPin, OUTPUT);
@@ -913,7 +914,7 @@ void setup() {
   drawPcWaiting();
   display.display();
 
-  delay(1500);
+  delay(2500);
   char rec[32];
   if (Serial.peek() == 'u') {
     Serial.read();
@@ -937,7 +938,7 @@ void setup() {
         repeats = 0;
         while (Serial.available() > 0) {
           rec[repeats] = Serial.read();
-          drawCenteredText(rec);
+          drawCenteredText(rec, true);
           delay(100);
           repeats++;
         }
@@ -954,7 +955,7 @@ void setup() {
         repeats = 0;
         while (Serial.available() > 0) {
           rec[repeats] = Serial.read();
-          drawCenteredText(rec);
+          drawCenteredText(rec, true);
           delay(100);
           repeats++;
         }
@@ -983,7 +984,7 @@ void setup() {
         repeats = 0;
         while (Serial.available() > 0) {
           inc[repeats] = Serial.read();
-          draw11pCenteredText(inc);
+          draw11pCenteredText(inc, true);
           delay(100);
           repeats++;
         }
@@ -1262,7 +1263,7 @@ String noToTD(long i) { // Triple Digits
     return String(i);
 }
 
-void drawCenteredText(String str) {
+void drawCenteredText(String str, bool forcePrintVerbose) {
   unsigned int width;
   unsigned int height;
   int curX;
@@ -1277,8 +1278,15 @@ void drawCenteredText(String str) {
   curX = 63 - (width / 2);
   curY = 15 + (height / 2) ;
 
-  if (millis() < 45000)
-    Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
+  if (verboseReportCount % 90 == 0 || forcePrintVerbose)
+    Serial.println(str);
+  // Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
+
+  verboseReportCount++;
+
+  if (verboseReportCount > 180) {
+    verboseReportCount = verboseReportCount - 180;
+  }
 
   display.setCursor(curX, curY);
   display.println(str);
@@ -1287,7 +1295,13 @@ void drawCenteredText(String str) {
   display.setFont();
 }
 
-void draw11pCenteredText(String str) {
+void drawCenteredText(String str) {
+  drawCenteredText(str, false);
+}
+
+
+
+void draw11pCenteredText(String str, bool forcePrintVerbose) {
   unsigned int width;
   unsigned int height;
   int curX;
@@ -1301,14 +1315,25 @@ void draw11pCenteredText(String str) {
   curX = 63 - (width / 2) ;
   curY = 15 + (height / 2)  ;
 
-  if (millis() < 45000)
-    Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
+  if (verboseReportCount % 90 == 0 || forcePrintVerbose)
+    Serial.println(str);
+  // Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
+
+  verboseReportCount++;
+
+  if (verboseReportCount > 180) {
+    verboseReportCount = verboseReportCount - 180;
+  }
 
   display.setCursor(curX, curY);
   display.println(str);
   display.display();
 
   display.setFont();
+}
+
+void draw11pCenteredText(String str) {
+  draw11pCenteredText(str, false);
 }
 
 
@@ -1340,7 +1365,7 @@ void drawNanoAndNano() {
   display.drawBitmap(110, 4, nano, 11, 18, WHITE);
 }
 
-void drawContactingNano(){
+void drawContactingNano() {
   drawNanoAndNano();
   display.setTextSize(1);
   display.setCursor(18, 24);
