@@ -1,12 +1,7 @@
 import datetime
 import os
-from win10toast import ToastNotifier
-import serial
 import time
-import getpass
 import serial.tools.list_ports
-import serial.tools.list_ports
-from serial import SerialException
 
 
 def getTime():
@@ -20,14 +15,14 @@ def log(string):
     file.close()
 
 
-def awaitK():
+def AwaitK():
     log(getTime() + " Awaiting 'k'...")
-    screenInoMsg = arduino[screenAt].readline()
-    log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
-    while (screenInoMsg != b"k"):
-        screenInoMsg = arduino[screenAt].readline()
-        log(ports[screenAt].name + "@" + getTime() + ": " + screenInoMsg.decode('utf-8'))
-        time.sleep(0.25)
+    screeninomsg = arduino[screenAt].readline()
+    log(ports[screenAt].name + "@" + getTime() + ": " + screeninomsg.decode('utf-8'))
+    while (screeninomsg != b"k"):
+        screeninomsg = arduino[screenAt].readline()
+        if (screeninomsg.__len__() > 0):
+            log(ports[screenAt].name + "@" + getTime() + ": " + screeninomsg.decode('utf-8'))
     log(getTime() + " Receieved 'k'")
 
 
@@ -54,15 +49,15 @@ for prt, desc, hwid in sorted(ports):
         else:
             arduino.append(temp)
 
-        connected.append(True)
+        connected.append(prt)
     except Exception as e:
         try:
             if (arduino.__sizeof__() != 0):
-                arduino.append(False)
+                arduino.append(serial.Serial())
             log(getTime() + " Nastala chyba při připojování k " + "{}: {} [{}]".format(prt, desc, hwid)
                 + " : " + e.__str__())
             log("")
-            connected.append(False)
+            connected.append("false")
         except Exception as eFatal:
             log(getTime() + " Nastala chyba při pokusu zotavit se z chyby: " + eFatal.__str__())
             log("")
@@ -77,9 +72,9 @@ while (looped < 3 and not found):
     i = 0
     for a in arduino:
         log(getTime() + " Kontroluji arduino " + i.__str__())
-        if (connected[i]):
+        if (not connected[i].__eq__("false")):
             inp = a.readline()
-            log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8'))
+            log(connected[i] + "@" + getTime() + ": " + inp.decode('utf-8'))
             if (inp == b"Screen module"):
                 log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
                 found = True
@@ -90,7 +85,7 @@ while (looped < 3 and not found):
             log(getTime() + " Toto arduino není připojeno.")
     if (not found):
         looped = looped + 1
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 if (not found):
     log(getTime() + " Žádné z detekovaných arduin není obrazovkové, vypínám se.")
@@ -104,7 +99,7 @@ match (file2.read()):
     case "1":
         log(getTime() + " Arduino bude ukazovat čas")
         arduino[screenAt].write(b"ut")  # use time
-        awaitK()
+        AwaitK()
         rn = datetime.datetime.now()
         log(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
         arduino[screenAt].write(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
@@ -112,30 +107,39 @@ match (file2.read()):
     case "2":
         log(getTime() + " Arduino bude ukazovat datum")
         arduino[screenAt].write(b"ud")  # use date
-        awaitK()
+        AwaitK()
         rn = datetime.datetime.now()
         arduino[screenAt].write(str.encode(((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__()))
         log(getTime() + " Čas odeslán: " + ((rn.hour * 60 + rn.minute) * 60 + rn.second).__str__())
-        awaitK()
+        AwaitK()
         arduino[screenAt].write(str.encode(rn.strftime("%Y-%m-%d")))
         log(getTime() + " Datum odesláno: " + rn.strftime("%Y-%m-%d"))
 
 log(getTime() + " Přecházím na pasivní mód")
 
-try:
-    while True:
-        i = 0
-        for a in arduino:
-            if (connected[i]):
-                inp = a.readline()
-                if (inp.__len__() > 0):
-                    log(ports[i].name + "@" + getTime() + ": " + inp.decode('utf-8').replace("\n", ""))
-                i = i + 1
+CurrentPort = "0"
 
-except KeyboardInterrupt as e:
-    log(getTime() + " Přijato Ctrl+C.")
-    log("")
-    exit(0)
-except Exception as e:
-    log(getTime() + " Nastala chyba: " + e.__str__())
-    log("")
+while (True):
+    try:
+        while True:
+            i = 0
+            for a in arduino:
+                if (not connected[i].__eq__("false")):
+                    CurrentPort = connected[i]
+                    inp = a.readline()
+                    decoded = ""
+                    if (inp.__len__() > 0):
+                        try:
+                            decoded = inp.decode('utf-8').replace("\n", "")
+                        except Exception as e:
+                            log(getTime() + " Nepovedlo se dekódovat zprávu od Arduina " + CurrentPort + " (" + e.args.__str__() + ")")
+                            decoded = inp.__str__().replace("\n", "")
+                        log(connected[i] + "@" + getTime() + ": " + decoded)
+                    i = i + 1
+    except KeyboardInterrupt as e:
+        log(getTime() + " Přijato Ctrl+C.")
+        log("")
+        exit(0)
+    except Exception as e:
+        log(getTime() + " Nastala chyba při komunikaci s " + CurrentPort + " (" + e.__str__() + ")")
+        log("")
