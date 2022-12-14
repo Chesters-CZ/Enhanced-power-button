@@ -29,6 +29,8 @@ def AwaitK():
 ports = serial.tools.list_ports.comports()
 file2 = open(os.environ['USERPROFILE'] + '\\enhanced-power-button-config.txt', 'r')
 
+log("")
+log("################################")
 log("Script spuštěn v " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 log("Dostupné COM porty jsou:")
 
@@ -126,15 +128,16 @@ while (True):
             for a in arduino:
                 if (not connected[i].__eq__("false")):
                     CurrentPort = connected[i]
-                    inp = a.readline()
-                    decoded = ""
-                    if (inp.__len__() > 0):
-                        try:
-                            decoded = inp.decode('utf-8').replace("\n", "")
-                        except Exception as e:
-                            log(getTime() + " Nepovedlo se dekódovat zprávu od Arduina " + CurrentPort + " (" + e.args.__str__() + ")")
-                            decoded = inp.__str__().replace("\n", "")
-                        log(connected[i] + "@" + getTime() + ": " + decoded)
+                    inp = a.readlines()
+                    for line in inp:
+                        decoded = ""
+                        if (line.__len__() > 0):
+                            try:
+                                decoded = line.decode('utf-8').replace("\n", "")
+                            except Exception as e:
+                                log(getTime() + " Nepovedlo se dekódovat zprávu od Arduina " + CurrentPort + " (" + e.args.__str__() + ")")
+                                decoded = line.__str__().replace("\n", "")
+                            log(connected[i] + "@" + getTime() + ": " + decoded)
                     i = i + 1
     except KeyboardInterrupt as e:
         log(getTime() + " Přijato Ctrl+C.")
