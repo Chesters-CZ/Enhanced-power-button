@@ -72,13 +72,15 @@ void prectiADesifruj (int bits)
   int block = 0;
   int newBlock;
 
+  byte tagID[4] = {0};
+
   Serial.println();
   Serial.println(F("READY TO READ"));
 
   bool success = false;
   do {
     // returns true if a Mifare tag is detected
-    success = rfid.detectTag();
+    success = rfid.detectTag(tagID);
     delay(50); //0.05s
   } while (!success);
 
@@ -140,15 +142,69 @@ void prectiADesifruj (int bits)
   if (s.charAt(0) == 't') {
     String s1;
 
-    do {
-      newBlock = rfid.readFile(50, "LogOff", (byte*)logOffPref, 64);
-      s1 = logOffPref;
-    } while (s.equals(s1) && newBlock >= 0);
+    rfid.unselectMifareTag(true);
+    delay(50);
 
-    if (!s.equals(s1))
-      Serial.println("CONDITION 1");
-    if (!newBlock >= 0)
-      Serial.println("CONDITION 2");
+    byte newTagID[4] = {0};
+    byte badReads = 0;
+
+    do {
+      for (byte IDsegment : newTagID) {
+        IDsegment = 0;
+      }
+
+      success = rfid.detectTag(newTagID);
+
+      if (success) {
+        for (byte i = 2; i < 4; i++) {
+          if (tagID[i] != newTagID[i]) {
+            success = false;
+            break;
+          }
+        }
+
+        Serial.print("Old tag ID: ");
+        for (byte i = 2; i < 4; i++) {
+          Serial.print(String(tagID[i]));
+          Serial.print(", ");
+        }
+        Serial.println();
+
+        Serial.print("New tag ID: ");
+        for (byte i = 2; i < 4; i++) {
+          Serial.print(String(newTagID[i]));
+          Serial.print(", ");
+        }
+        Serial.println();
+      }
+
+      if (success) {
+        Serial.println("Good read!");
+        badReads = 0;
+      } else {
+        Serial.print("Bad read: ");
+        badReads++;
+        Serial.println(badReads);
+      }
+
+      rfid.unselectMifareTag(true);
+      delay(50);
+    } while (badReads < 10);
+
+
+    Serial.print("Old tag ID: ");
+    for (byte i = 2; i < 4; i++) {
+      Serial.print(String(tagID[i]));
+          Serial.print(", ");
+    }
+    Serial.println();
+
+    Serial.print("New tag ID: ");
+    for (byte i = 2; i < 4; i++) {
+      Serial.print(String(newTagID[i]));
+          Serial.print(", ");
+    }
+    Serial.println();
 
     Keyboard.press(KEY_LEFT_GUI);
     Keyboard.press('l');
