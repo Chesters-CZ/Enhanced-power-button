@@ -1278,14 +1278,14 @@ void drawCenteredText(String str, bool forcePrintVerbose) {
   curX = 63 - (width / 2);
   curY = 15 + (height / 2) ;
 
-  if (verboseReportCount % 90 == 0 || forcePrintVerbose)
+  if (verboseReportCount % 250 == 0 || forcePrintVerbose)
     Serial.println(str);
   // Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
 
   verboseReportCount++;
 
-  if (verboseReportCount > 180) {
-    verboseReportCount = verboseReportCount - 180;
+  if (verboseReportCount > 250) {
+    verboseReportCount = verboseReportCount - 250;
   }
 
   display.setCursor(curX, curY);
@@ -1315,14 +1315,14 @@ void draw11pCenteredText(String str, bool forcePrintVerbose) {
   curX = 63 - (width / 2) ;
   curY = 15 + (height / 2)  ;
 
-  if (verboseReportCount % 90 == 0 || forcePrintVerbose)
+  if (verboseReportCount % 250 == 0 || forcePrintVerbose)
     Serial.println(str);
   // Serial.println(str + ", " + String(width) + ", " + String(height) + ", " + String(curX) + ", " + String(curY));
 
   verboseReportCount++;
 
-  if (verboseReportCount > 180) {
-    verboseReportCount = verboseReportCount - 180;
+  if (verboseReportCount > 250) {
+    verboseReportCount = verboseReportCount - 250;
   }
 
   display.setCursor(curX, curY);
