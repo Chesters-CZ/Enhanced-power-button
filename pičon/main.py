@@ -128,7 +128,15 @@ while (True):
             for a in arduino:
                 if (not connected[i].__eq__("false")):
                     CurrentPort = connected[i]
-                    inp = a.readlines()
+
+                    try:
+                        inp = a.readlines()
+                    except Exception as e:
+                        log(getTime() + " Nastala chyba při čtení zprávy od " + CurrentPort + ". Arduino pravděpodobně není připojeno. Nebudu se dále pokoušet ho kontaktovat (" + e.__str__() + ")")
+                        connected[i] = "false"
+                        i = i + 1
+                        continue
+
                     for line in inp:
                         decoded = ""
                         if (line.__len__() > 0):
@@ -144,5 +152,5 @@ while (True):
         log("")
         exit(0)
     except Exception as e:
-        log(getTime() + " Nastala chyba při komunikaci s " + CurrentPort + " (" + e.__str__() + ")")
+        log(getTime() + " Nastala obecná chyba při komunikaci s " + CurrentPort + " (" + e.__str__() + ")")
         log("")
