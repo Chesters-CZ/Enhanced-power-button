@@ -908,7 +908,10 @@ void setup() {
   display.display();
 
   Serial.begin(9600);
-  Serial.write("Screen module");
+  Serial.flush();
+  delay(250);
+  Serial.print("Screen module");
+  Serial.flush();
 
   display.clearDisplay();
   drawPcWaiting();

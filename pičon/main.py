@@ -45,7 +45,8 @@ for prt, desc, hwid in sorted(ports):
     log(getTime() + " Zkouším se připojit na " + prt + " (" + desc + ")")
     try:
         temp = serial.Serial(port=prt, baudrate=9600, timeout=1)
-
+        temp.reset_input_buffer()
+        temp.reset_output_buffer()
         if (arduino.__sizeof__() == 0):
             arduino = temp
         else:
@@ -65,29 +66,35 @@ for prt, desc, hwid in sorted(ports):
             log("")
             exit(-2)
 
+time.sleep(1)
+
 i = 0
 found = False
 looped = 0
 
-while (looped < 3 and not found):
+while (looped < 10 and not found):
     log(getTime() + " Kontroluji seznam arduin. Pokus " + looped.__str__())
     i = 0
     for a in arduino:
         log(getTime() + " Kontroluji arduino " + i.__str__())
         if (not connected[i].__eq__("false")):
-            inp = a.readline()
-            log(connected[i] + "@" + getTime() + ": " + inp.decode('utf-8'))
-            if (inp == b"Screen module"):
-                log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
-                found = True
-                screenAt = i
-                break
+            try:
+                inp = a.readline()
+
+                log(connected[i] + "@" + getTime() + ": " + inp.__str__())
+                if (inp.__contains__(b"Screen")):
+                    log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
+                    found = True
+                    screenAt = i
+                    break
+            except Exception as e:
+                log(getTime() + ": Nastala chyba při hledání arduina s obrazovkou (" + e.__str__() + ")")
+                print(inp)
             i = i + 1
         else:
             log(getTime() + " Toto arduino není připojeno.")
     if (not found):
         looped = looped + 1
-        time.sleep(0.1)
 
 if (not found):
     log(getTime() + " Žádné z detekovaných arduin není obrazovkové, vypínám se.")
