@@ -882,6 +882,8 @@ bool informedOfVerboseTimeout = false;
 byte verboseReportCount = 0;
 
 void setup() {
+  Serial.begin(9600);
+
   pinMode(pcswitchPin, OUTPUT);
   pinMode(localswitchPin, INPUT_PULLUP);
   pinMode(commsOutPin, OUTPUT);
@@ -907,9 +909,8 @@ void setup() {
   drawSplash();
   display.display();
 
-  Serial.begin(9600);
   Serial.flush();
-  delay(250);
+  delay(500);
   Serial.print("Screen module");
   Serial.flush();
 
