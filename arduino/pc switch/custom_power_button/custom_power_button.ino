@@ -854,8 +854,8 @@ const unsigned char  che [] PROGMEM = {
   0x08, 0x40, 0x84, 0x40, 0x20, 0x02, 0x00, 0x40, 0x3f, 0x8f, 0x04, 0x08, 0x78, 0x88, 0x20, 0x20,
   0x02, 0x00, 0x40, 0x20, 0x88, 0x02, 0x08, 0x40, 0xf0, 0x10, 0x20, 0x04, 0x00, 0x40, 0x20, 0x88,
   0x01, 0x08, 0x40, 0x88, 0x08, 0x20, 0x08, 0x00, 0x40, 0x20, 0x88, 0x01, 0x08, 0x40, 0x88, 0x08,
-  0x20, 0x08, 0x00, 0x21, 0x20, 0x88, 0x12, 0x08, 0x40, 0x84, 0x90, 0x10, 0x90, 0x00, 0x1e, 0x20,
-  0x8f, 0x8c, 0x08, 0x7c, 0x84, 0x61, 0x0f, 0x1f, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x20, 0x08, 0x00, 0x21, 0x20, 0x88, 0x11, 0x08, 0x40, 0x84, 0x88, 0x10, 0x90, 0x00, 0x1e, 0x20,
+  0x8f, 0x8e, 0x08, 0x7c, 0x84, 0x71, 0x0f, 0x1f, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00
 };
 
@@ -911,7 +911,7 @@ void setup() {
 
   Serial.flush();
   delay(500);
-  Serial.print("Screen module");
+  Serial.print(F("Screen module"));
   Serial.flush();
 
   display.clearDisplay();
@@ -954,7 +954,8 @@ void setup() {
         screensaver = 2;
         // drawCenteredText("date");
 
-        Serial.write('k');
+        Serial.print('k');
+  Serial.flush();
         delay(2000);
         repeats = 0;
         while (Serial.available() > 0) {
@@ -968,7 +969,7 @@ void setup() {
         milisAtStart = (atol(rec) * 1000L) - millis();
 
 
-        Serial.println("Clearing Serial buffer...");
+        Serial.println(F("Clearing Serial buffer..."));
         repeats = 0;
         while (Serial.available() > 0) {
           Serial.read();
@@ -977,7 +978,8 @@ void setup() {
         Serial.println("Cleared " + String(repeats) + " chars");
 
         delay(1000);
-        Serial.write('k');
+        Serial.print('k');
+  Serial.flush();
         delay(1000);
 
         while (Serial.available() < 1) {
@@ -1042,7 +1044,7 @@ void setup() {
 
 void loop() {
   if (millis > 45000 && !informedOfVerboseTimeout) {
-    Serial.println("Verbose timeout triggered. Will no longer print output of drawCenteredText()");
+    Serial.println(F("Verbose timeout triggered. Will no longer print output of drawCenteredText()"));
     Serial.println("Current millis: " + String(millis()));
   }
 
@@ -1099,7 +1101,7 @@ void loop() {
 
 
   } else {
-    Serial.println("pushed");
+    Serial.println(F("pushed"));
 
     digitalWrite(pcswitchPin, HIGH);
     pcswitch = digitalRead(localswitchPin);
