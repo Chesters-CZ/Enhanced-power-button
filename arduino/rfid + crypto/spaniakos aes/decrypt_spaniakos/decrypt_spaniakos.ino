@@ -1,7 +1,6 @@
 
 #include <AES.h>
 #include <AES_config.h>
-#include <printf.h>
 #include "base64.hpp"
 #include "EasyMFRC522.h"
 #include <CzechKeyboard_QWERTZ.h>
@@ -25,7 +24,6 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  printf_begin();
   delay(500);
   rfid.init();
   Keyboard.begin();
