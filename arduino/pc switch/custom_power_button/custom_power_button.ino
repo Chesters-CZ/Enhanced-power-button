@@ -859,6 +859,14 @@ const unsigned char  che [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00
 };
 
+// 'msg sent', 29x13px
+const unsigned char  msg_sent [] PROGMEM = {
+  0x00, 0x00, 0x00, 0x00, 0x01, 0xff, 0xff, 0xf0, 0x1d, 0x80, 0x00, 0x30, 0x01, 0x60, 0x00, 0xd0,
+  0x7d, 0x18, 0x03, 0x10, 0x01, 0x06, 0x0c, 0x10, 0xfd, 0x09, 0xb2, 0x10, 0x01, 0x10, 0x41, 0x10,
+  0x7d, 0x20, 0x00, 0x90, 0x01, 0x40, 0x00, 0x50, 0x1d, 0x80, 0x00, 0x30, 0x01, 0xff, 0xff, 0xf0,
+  0x00, 0x00, 0x00, 0x00
+};
+
 const int pcswitchPin = 2;
 const int localswitchPin = 3;
 const int commsOutPin = 7;
@@ -911,7 +919,7 @@ void setup() {
 
   Serial.flush();
   delay(500);
-  Serial.print(F("Screen module"));
+  Serial.println(F("Screen module"));
   Serial.flush();
 
   display.clearDisplay();
@@ -955,7 +963,7 @@ void setup() {
         // drawCenteredText("date");
 
         Serial.print('k');
-  Serial.flush();
+        Serial.flush();
         delay(2000);
         repeats = 0;
         while (Serial.available() > 0) {
@@ -979,7 +987,7 @@ void setup() {
 
         delay(1000);
         Serial.print('k');
-  Serial.flush();
+        Serial.flush();
         delay(1000);
 
         while (Serial.available() < 1) {
@@ -1115,9 +1123,11 @@ void loop() {
     digitalWrite(pcswitchPin, LOW);
     commsIn = digitalRead(commsInPin);
     if (commsIn == 1) {
+      Serial.println("audio module not ready yet");
       // Not ready to play sound, show error message and continue
       frame = 0;
       while (frame < 7) {
+        display.clearDisplay();
         drawNotReady(frame % 2);
         // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
         display.display();
@@ -1133,13 +1143,30 @@ void loop() {
       digitalWrite(commsOutPin, HIGH);
       while (commsIn == 0) {
         if (frame % 89 == 0) {
+          display.clearDisplay();
           drawContactingNano();
           display.display();
+        } if (frame == 255) {
+          Serial.print("request timed out");
+          frame = 0;
+          while (frame < 7) {
+            display.clearDisplay();
+            drawTimedOut(frame % 2);
+            // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
+            display.display();
+            delay(500);
+            frame++;
+          }
+          return;
         }
         display.drawPixel((frame % 89) + 18, 13, BLACK);
         display.drawPixel((frame % 89) + 19, 13, WHITE);
         display.drawPixel((frame % 89) + 20, 13, WHITE);
         display.drawPixel((frame % 89) + 21, 13, WHITE);
+
+        display.drawBitmap(59, 7, wait_shadow, 11, 11, BLACK);
+        display.drawBitmap(59, 7, wait, 11, 11, WHITE);
+
         display.display();
 
         frame++;
@@ -1367,18 +1394,21 @@ void testdrawchar(void) {
 }
 
 void drawNanoAndNano() {
-  display.drawBitmap(7, 4, nano, 15, 17, WHITE);
+  display.drawBitmap(7, 4, nano, 11, 18, WHITE);
   display.drawBitmap(110, 4, nano, 11, 18, WHITE);
 }
 
 void drawContactingNano() {
   drawNanoAndNano();
   display.setTextSize(1);
-  display.setCursor(18, 24);
+  display.setCursor(28, 24);
   display.println(F("contacting nano"));
-  display.drawPixel(108, 30, WHITE);
-  display.drawPixel(110, 30, WHITE);
-  display.drawPixel(112, 30, WHITE);
+  display.drawPixel(118, 30, WHITE);
+  display.drawPixel(120, 30, WHITE);
+  display.drawPixel(122, 30, WHITE);
+
+  display.drawBitmap(59, 7, wait_shadow, 11, 11, BLACK);
+  display.drawBitmap(59, 7, wait, 11, 11, WHITE);
 }
 
 void drawNotReady(bool frame) {
@@ -1387,6 +1417,28 @@ void drawNotReady(bool frame) {
     display.drawBitmap(109, 5, notready_warn_shadow, 13, 15, BLACK);
     display.drawBitmap(109, 5, notready_warn, 13, 15, WHITE);
   }
+
+  display.setFont();
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.setCursor(24, 24);
+  display.println("not ready to play");
+}
+
+void drawTimedOut(bool frame) {
+  drawNanoAndNano();
+  display.drawBitmap(46, 7, msg_sent, 29, 13, WHITE);
+
+  if (frame) {
+    display.drawBitmap(57, 4, notready_warn_shadow, 13, 15, BLACK);
+    display.drawBitmap(57, 4, notready_warn, 13, 15, WHITE);
+  }
+
+  display.setFont();
+  display.setTextColor(WHITE);
+  display.setTextSize(1);
+  display.setCursor(69, 24);
+  display.println("timed out");
 }
 
 void drawPcDisconnected() {
