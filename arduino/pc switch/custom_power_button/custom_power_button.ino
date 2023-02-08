@@ -1051,10 +1051,6 @@ void setup() {
 }
 
 void loop() {
-  if (millis > 45000 && !informedOfVerboseTimeout) {
-    Serial.println(F("Verbose timeout triggered. Will no longer print output of drawCenteredText()"));
-    Serial.println("Current millis: " + String(millis()));
-  }
 
   display.clearDisplay();
   pcswitch = digitalRead(localswitchPin);
@@ -1122,6 +1118,8 @@ void loop() {
     }
     digitalWrite(pcswitchPin, LOW);
     commsIn = digitalRead(commsInPin);
+    Serial.print("commsIn: ");
+    Serial.println(commsIn);
     if (commsIn == 1) {
       Serial.println("audio module not ready yet");
       // Not ready to play sound, show error message and continue
