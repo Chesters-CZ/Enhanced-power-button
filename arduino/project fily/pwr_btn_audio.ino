@@ -39,7 +39,7 @@ void loop() {
 
     int rng = random(totalTracks);
     Serial.print("Playing ");
-    String fileName = "STARTU" + zeropadDD(rng) + ".wav";
+    String fileName = "STARTU" + zeropadDD(rng) + ".WAV";
     Serial.println(fileName);
     char fileNameAsChar[13];
     fileName.toCharArray(fileNameAsChar, 13);
