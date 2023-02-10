@@ -10,13 +10,13 @@ byte commsIn = 0;
 
 
 void setup() {
+  Serial.begin(9600);
+  
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
 
   tmrpcm.speakerPin = 9;
   tmrpcm.setVolume(5);
-
-  Serial.begin(9600);
 
   randomSeed(analogRead(A0));
 

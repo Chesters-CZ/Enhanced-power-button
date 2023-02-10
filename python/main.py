@@ -38,9 +38,7 @@ for port, desc, hwid in sorted(ports):
     log("{}: {} [{}]".format(port, desc, hwid))
 
 arduino = []
-connected = []
 screenAt = -1
-i = 0
 for prt, desc, hwid in sorted(ports):
     log(getTime() + " Zkouším se připojit na " + prt + " (" + desc + ")")
     try:
@@ -52,7 +50,6 @@ for prt, desc, hwid in sorted(ports):
         else:
             arduino.append(temp)
 
-        connected.append(prt)
     except Exception as e:
         try:
             if (arduino.__sizeof__() != 0):
@@ -60,15 +57,11 @@ for prt, desc, hwid in sorted(ports):
             log(getTime() + " Nastala chyba při připojování k " + "{}: {} [{}]".format(prt, desc, hwid)
                 + " : " + e.__str__())
             log("")
-            connected.append("false")
         except Exception as eFatal:
             log(getTime() + " Nastala chyba při pokusu zotavit se z chyby: " + eFatal.__str__())
             log("")
             exit(-2)
 
-time.sleep(1)
-
-i = 0
 found = False
 looped = 0
 
@@ -76,12 +69,12 @@ while (looped < 10 and not found):
     log(getTime() + " Kontroluji seznam arduin. Pokus " + looped.__str__())
     i = 0
     for a in arduino:
-        log(getTime() + " Kontroluji arduino " + i.__str__())
-        if (not connected[i].__eq__("false")):
+        log(getTime() + " Kontroluji arduino na " + a.port.__str__())
+        if (a.isOpen()):
             try:
                 inp = a.readline()
 
-                log(connected[i] + "@" + getTime() + ": " + inp.__str__())
+                log(a.port.__str__() + "@" + getTime() + ": " + inp.__str__())
                 if (inp.__contains__(b"Screen")):
                     log(getTime() + ": " + "Nalezeno arduino s obrazovkou")
                     found = True
@@ -92,7 +85,7 @@ while (looped < 10 and not found):
                 print(inp)
             i = i + 1
         else:
-            log(getTime() + " Toto arduino není připojeno.")
+            log(getTime() + " COM port " + a.port.__str__() + " není otevřený.")
     if (not found):
         looped = looped + 1
 
@@ -126,22 +119,15 @@ match (file2.read()):
 
 log(getTime() + " Přecházím na pasivní mód")
 
-CurrentPort = "0"
-
 while (True):
     try:
         while True:
-            i = 0
             for a in arduino:
-                if (not connected[i].__eq__("false")):
-                    CurrentPort = connected[i]
-
+                if (a.isOpen()):
                     try:
                         inp = a.readlines()
                     except Exception as e:
-                        log(getTime() + " Nastala chyba při čtení zprávy od " + CurrentPort + ". Arduino pravděpodobně není připojeno. Nebudu se dále pokoušet ho kontaktovat (" + e.__str__() + ")")
-                        connected[i] = "false"
-                        i = i + 1
+                        log(getTime() + " Nastala chyba při čtení zprávy od " + a.port.__str__() + ". Arduino pravděpodobně není připojeno. Nebudu se dále pokoušet ho kontaktovat (" + e.__str__() + ")")
                         continue
 
                     for line in inp:
@@ -150,14 +136,19 @@ while (True):
                             try:
                                 decoded = line.decode('utf-8').replace("\n", "")
                             except Exception as e:
-                                log(getTime() + " Nepovedlo se dekódovat zprávu od Arduina " + CurrentPort + " (" + e.args.__str__() + ")")
+                                log(getTime() + " Nepovedlo se dekódovat zprávu od Arduina " + a.port.__str__() + " (" + e.args.__str__() + ")")
                                 decoded = line.__str__().replace("\n", "")
-                            log(connected[i] + "@" + getTime() + ": " + decoded)
-                    i = i + 1
+                            log(a.port.__str__() + "@" + getTime() + ": " + decoded)
     except KeyboardInterrupt as e:
         log(getTime() + " Přijato Ctrl+C.")
         log("")
         exit(0)
     except Exception as e:
-        log(getTime() + " Nastala obecná chyba při komunikaci s " + CurrentPort + " (" + e.__str__() + ")")
-        log("")
+        try:
+            log(getTime() + " Nastala obecná chyba při komunikaci s " + a.port.__str__() + " (" + e.__str__() + ")")
+            log("")
+        except Exception as e2:
+            log(getTime() + " Nastala chyba při pokusu reportovat obecnou chybu při komunikaci")
+            log("Obecná chyba: (" + e.__str__() + ")")
+            log("Druhá chyba: (" + e2.__str__() + ")")
+            log("")

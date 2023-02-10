@@ -1012,7 +1012,7 @@ void setup() {
         Serial.println("Date parsed as: " + String(yearAtStart) + "." + String(monthAtStart) + "." + String(dayAtStart));
     }
 
-    delay(250);
+    delay(1500);
 
     display.clearDisplay();
     drawPcSuccess();
@@ -1029,7 +1029,7 @@ void setup() {
     }
   }
 
-  delay(3000);
+  delay(1000);
 
   //display.invertDisplay(0);
   //display.display();
