@@ -8,13 +8,17 @@ AES aes;
 
 EasyMFRC522 rfid(10, 5);
 
+// !!! DŮLEŽITÉ !!!
+// Před použitím změňte heslo, šifrovací klíč a
+// inicializační vektor na vlastní hodnoty.
+
 // Heslo k zašifrování
 byte plain[] = "UltraSuperSecret69_!";
 
-// Tímhle se to zašifruje   "Sem je to AES128"sem 192"sem 256"
+// Šifrovací klíč           "Sem je to AES128"sem 192"sem 256"
 byte *key = (unsigned char*)"4428472B4B625065";
 
-// Tímhle se to osolí (doopravdy se dají dvě tyhle věci za sebe ale pššt)
+// Inicializační vektor
 unsigned long long int my_iv = 22176790;
 
 int plainLength = sizeof(plain) - 1; // nepočítat null terminator

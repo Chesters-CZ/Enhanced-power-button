@@ -10,10 +10,14 @@ AES aes;
 
 EasyMFRC522 rfid(10, 5);
 
-// Tímhle se to dešifruje   "Sem je to AES128"sem 192"sem 256"
+// !!! DŮLEŽITÉ !!!
+// Šifrovací klíč i inicializační vektor níže se musí
+// shodovat s těmi, které byly použity k šifrování hesla. 
+
+// Šifrovací klíč           "Sem je to AES128"sem 192"sem 256"
 byte *key = (unsigned char*)"4428472B4B625065";
 
-// Tímhle se to osolí (doopravdy se dají dvě tyhle věci za sebe ale pššt)
+// Inicializační vektor
 unsigned long long int my_iv = 22176790;
 
 int padedLength = 32; // vždycky šifrovat do dvou segmentů
