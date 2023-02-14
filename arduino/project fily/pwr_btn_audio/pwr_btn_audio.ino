@@ -5,11 +5,17 @@ TMRpcm tmrpcm;
 
 const int commsOutPin = 7;
 const int commsInPin = 8;
-const int totalTracks = 50 + 1;
+const int totalTracks = 69 + 1;
 byte commsIn = 0;
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(250);
   Serial.begin(9600);
   
   pinMode(commsOutPin, OUTPUT);
