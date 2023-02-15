@@ -5,7 +5,7 @@ TMRpcm tmrpcm;
 
 const int commsOutPin = 7;
 const int commsInPin = 8;
-const int totalTracks = 69 + 1;
+const int totalTracks = -1;
 byte commsIn = 0;
 
 
@@ -13,11 +13,23 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   delay(500);
-  
+
+  File root = SD.open("/");
+  File currentFile;
+  while (true) {
+    currentFile = root.openNextFile();
+    if (currentFile) {
+      totalTracks++;
+    }
+    else {
+      break;
+    }
+  }
+
   digitalWrite(LED_BUILTIN, LOW);
   delay(250);
   Serial.begin(9600);
-  
+
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
 
