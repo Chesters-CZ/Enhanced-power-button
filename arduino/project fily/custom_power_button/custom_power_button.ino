@@ -88,20 +88,6 @@ const unsigned char nano [] PROGMEM = {
   0x80, 0x20, 0xff, 0xe0
 };
 
-// 'UNO', 15x17px
-const unsigned char uno [] PROGMEM = {
-  0x38, 0x78, 0xef, 0xce, 0x80, 0x02, 0x80, 0x4a, 0x80, 0x4a, 0xa0, 0x32, 0xa0, 0x02, 0xa0, 0x4a,
-  0xa0, 0x6a, 0xa0, 0x5a, 0xa0, 0x4a, 0xa0, 0x02, 0xa0, 0x32, 0xa7, 0x4a, 0xa7, 0x32, 0x80, 0x02,
-  0xff, 0xfe
-};
-
-// 'LEO', 15x17px
-const unsigned char leo [] PROGMEM = {
-  0x38, 0x78, 0xef, 0xce, 0x80, 0x02, 0x80, 0x42, 0x80, 0x7a, 0xa0, 0x02, 0xa0, 0x3a, 0xa0, 0x42,
-  0xa0, 0x72, 0xa0, 0x42, 0xa0, 0x3a, 0xa0, 0x02, 0xa0, 0x32, 0xa7, 0x4a, 0xa7, 0x32, 0x80, 0x02,
-  0xff, 0xfe
-};
-
 // 'notready warn', 13x15px with alpha shadow
 const unsigned char notready_warn [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x05, 0x00, 0x05, 0x00, 0x08, 0x80, 0x0a, 0x80, 0x12, 0x40,
@@ -121,15 +107,6 @@ const unsigned char PC [] PROGMEM = {
   0x40, 0x00, 0x40, 0x04, 0x40, 0x00, 0x40, 0x04, 0x40, 0x00, 0x40, 0x04, 0x40, 0x00, 0x40, 0x04,
   0x7f, 0xff, 0xc7, 0xc4, 0x00, 0x20, 0x40, 0x04, 0x01, 0xfc, 0x40, 0x04, 0x00, 0x00, 0x7f, 0xfc,
   0x00, 0x00, 0x00, 0x00
-};
-
-const unsigned char PC_shadow [] PROGMEM = {
-  0x00, 0x00, 0xff, 0xfe, 0x00, 0x00, 0xff, 0xfe, 0x00, 0x00, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe,
-  0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe,
-  0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe,
-  0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe,
-  0xff, 0xff, 0xff, 0xfe, 0xff, 0xff, 0xff, 0xfe, 0x03, 0xfe, 0xff, 0xfe, 0x03, 0xfe, 0xff, 0xfe,
-  0x00, 0x00, 0xff, 0xfe
 };
 
 // 'unresponsive sleep zzz', 11x11px
@@ -168,11 +145,6 @@ const unsigned char  err_shadow [] PROGMEM = {
 const unsigned char  checkmark [] PROGMEM = {
   0x00, 0x00, 0x00, 0x80, 0x01, 0x80, 0x01, 0x00, 0x03, 0x00, 0x02, 0x00, 0x66, 0x00, 0x34, 0x00,
   0x1c, 0x00, 0x08, 0x00, 0x00, 0x00
-};
-
-const unsigned char  checkmark_shadow [] PROGMEM = {
-  0x01, 0xc0, 0x03, 0xc0, 0x03, 0xc0, 0x07, 0xc0, 0x07, 0x80, 0xff, 0x80, 0xff, 0x00, 0xff, 0x00,
-  0x7e, 0x00, 0x3e, 0x00, 0x1c, 0x00
 };
 
 // 'button pushed big', 32x32px
@@ -867,10 +839,28 @@ const unsigned char  msg_sent [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00
 };
 
-const int pcswitchPin = 2;
-const int localswitchPin = 3;
-const int commsOutPin = 7;
-const int commsInPin = 8;
+// 'lock', 9x9px
+const unsigned char  lock [] PROGMEM = {
+  0x00, 0x00, 0x1c, 0x00, 0x22, 0x00, 0x22, 0x00, 0x7f, 0x00, 0x41, 0x00, 0x41, 0x00, 0x7f, 0x00,
+  0x00, 0x00
+};
+
+// 'key', 21x22px
+const unsigned char  key [] PROGMEM = {
+  0x00, 0x00, 0x00, 0x0f, 0xc0, 0x00, 0x10, 0x20, 0x00, 0x2c, 0x10, 0x00, 0x52, 0x08, 0x00, 0x54,
+  0x08, 0x00, 0x48, 0x08, 0x00, 0x40, 0x08, 0x00, 0x40, 0x08, 0x00, 0x40, 0x08, 0x00, 0x20, 0x08,
+  0x00, 0x10, 0x04, 0x00, 0x0f, 0xca, 0x00, 0x00, 0x25, 0x00, 0x00, 0x12, 0x80, 0x00, 0x09, 0x40,
+  0x00, 0x08, 0xa0, 0x00, 0x0e, 0x50, 0x00, 0x01, 0x10, 0x00, 0x01, 0x90, 0x00, 0x00, 0x60, 0x00,
+  0x00, 0x00
+};
+
+const byte pcswitchPin = 2;
+const byte localswitchPin = 3;
+const byte commsOutPin = 7;
+const byte commsInPin = 8;
+const byte rfidChipAcceptPin = 11;
+const byte rfidLockPcPin = 12;
+const byte keyLockPin = 4;
 byte pcswitch = 0;
 byte commsIn = 0;
 
@@ -896,6 +886,11 @@ void setup() {
   pinMode(localswitchPin, INPUT_PULLUP);
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
+  pinMode(rfidChipAcceptPin, INPUT_PULLUP);
+  pinMode(rfidLockPcPin, INPUT_PULLUP);
+  pinMode(keyLockPin, INPUT_PULLUP);
+
+  Serial.println(digitalRead(keyLockPin));
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -977,13 +972,13 @@ void setup() {
         milisAtStart = (atol(rec) * 1000L) - millis();
 
 
-        Serial.println(F("Clearing Serial buffer..."));
+        Serial.println(F("Clearing buffer..."));
         repeats = 0;
         while (Serial.available() > 0) {
           Serial.read();
           repeats++;
         }
-        Serial.println("Cleared " + String(repeats) + " chars");
+        Serial.println("Cleared " + String(repeats));
 
         delay(1000);
         Serial.print('k');
@@ -1005,11 +1000,11 @@ void setup() {
 
         inc[repeats] = '\0';
         String incString = inc;
-        Serial.println("Date received as: " + incString);
+        Serial.println("Date rec: " + incString);
         yearAtStart = atol(incString.substring(0, 4).c_str());
         monthAtStart = atol(incString.substring(5, 7).c_str());
         dayAtStart = atol(incString.substring(8, 10).c_str());
-        Serial.println("Date parsed as: " + String(yearAtStart) + "." + String(monthAtStart) + "." + String(dayAtStart));
+        Serial.println("Date pars: " + String(yearAtStart) + "." + String(monthAtStart) + "." + String(dayAtStart));
     }
 
     delay(1500);
@@ -1057,6 +1052,29 @@ void loop() {
   // pcswitch = 0 if pushed, 1 if released
 
   if (pcswitch == 1) {
+    if (digitalRead(rfidChipAcceptPin) == 0) {
+      display.clearDisplay();
+      drawPcSuccessRfid();
+      resetFontStyles();
+      display.setCursor(24, 24);
+      display.println("card detected");
+      display.display();
+
+      delay(1000);
+      timestamp = 0;
+    }
+    if (digitalRead(rfidLockPcPin) == 0) {
+      display.clearDisplay();
+      drawPcLocked();
+      resetFontStyles();
+      display.setCursor(6, 24);
+      display.println("card gone, pc locked");
+      display.display();
+
+      delay(1000);
+      timestamp = 0;
+    }
+
     if (frame > 80) frame = frame - 80;
 
     if (timestamp < 100) {
@@ -1105,76 +1123,89 @@ void loop() {
 
 
   } else {
-    Serial.println(F("pushed"));
+    if (digitalRead(keyLockPin) == 0) {
+      Serial.println(F("pushed"));
 
-    digitalWrite(pcswitchPin, HIGH);
-    pcswitch = digitalRead(localswitchPin);
-    while (pcswitch == 0) {
-      display.clearDisplay();
-      drawButtonPushedBig();
-      display.display();
-      delay(50);
+      digitalWrite(pcswitchPin, HIGH);
       pcswitch = digitalRead(localswitchPin);
-    }
-    digitalWrite(pcswitchPin, LOW);
-    commsIn = digitalRead(commsInPin);
-    Serial.print("commsIn: ");
-    Serial.println(commsIn);
-    if (commsIn == 1) {
-      Serial.println("audio module not ready yet");
-      // Not ready to play sound, show error message and continue
-      frame = 0;
-      while (frame < 7) {
+      while (pcswitch == 0) {
         display.clearDisplay();
-        drawNotReady(frame % 2);
-        // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
+        drawButtonPushedBig();
         display.display();
-        delay(500);
-        frame++;
+        delay(50);
+        pcswitch = digitalRead(localswitchPin);
       }
-      frame = 0;
-    } else {
-      frame = 89;
-      display.clearDisplay();
-      drawContactingNano();
-      display.display();
-      digitalWrite(commsOutPin, HIGH);
-      while (commsIn == 0) {
-        if (frame % 89 == 0) {
+      digitalWrite(pcswitchPin, LOW);
+      commsIn = digitalRead(commsInPin);
+      if (commsIn == 1) {
+        Serial.println("audio not ready");
+        // Not ready to play sound, show error message and continue
+        frame = 0;
+        while (frame < 7) {
           display.clearDisplay();
-          drawContactingNano();
+          drawNotReady(frame % 2);
+          // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
           display.display();
-        } if (frame == 255) {
-          Serial.print("request timed out");
-          frame = 0;
-          while (frame < 7) {
-            display.clearDisplay();
-            drawTimedOut(frame % 2);
-            // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
-            display.display();
-            delay(500);
-            frame++;
-          }
-          return;
+          delay(500);
+          frame++;
         }
-        display.drawPixel((frame % 89) + 18, 13, BLACK);
-        display.drawPixel((frame % 89) + 19, 13, WHITE);
-        display.drawPixel((frame % 89) + 20, 13, WHITE);
-        display.drawPixel((frame % 89) + 21, 13, WHITE);
-
-        display.drawBitmap(59, 7, wait_shadow, 11, 11, BLACK);
-        display.drawBitmap(59, 7, wait, 11, 11, WHITE);
-
+        frame = 0;
+      } else {
+        frame = 89;
+        display.clearDisplay();
+        drawContactingNano();
         display.display();
+        digitalWrite(commsOutPin, HIGH);
+        while (commsIn == 0) {
+          if (frame % 89 == 0) {
+            display.clearDisplay();
+            drawContactingNano();
+            display.display();
+          } if (frame == 255) {
+            Serial.print("request timed out");
+            frame = 0;
+            while (frame < 7) {
+              display.clearDisplay();
+              drawTimedOut(frame % 2);
+              // display.drawBitmap(0, 0, notready[frame % 2], 128, 32, WHITE);
+              display.display();
+              delay(500);
+              frame++;
+            }
+            return;
+          }
+          display.drawPixel((frame % 89) + 18, 13, BLACK);
+          display.drawPixel((frame % 89) + 19, 13, WHITE);
+          display.drawPixel((frame % 89) + 20, 13, WHITE);
+          display.drawPixel((frame % 89) + 21, 13, WHITE);
 
-        frame++;
-        commsIn = digitalRead(commsInPin);
+          display.drawBitmap(59, 7, wait_shadow, 11, 11, BLACK);
+          display.drawBitmap(59, 7, wait, 11, 11, WHITE);
+
+          display.display();
+
+          frame++;
+          commsIn = digitalRead(commsInPin);
+        }
+        // connection established, playing sound...
+        digitalWrite(commsOutPin, LOW);
       }
-      // connection established, playing sound...
-      digitalWrite(commsOutPin, LOW);
+      delay(250);
+      timestamp = 0;
     }
-    delay(250);
-    timestamp = 0;
+    else {
+      display.clearDisplay();
+      display.drawBitmap(54, 2, key, 21, 22, WHITE);
+      resetFontStyles();
+      display.setCursor(8, 24);
+      display.println("unlock switch first");
+      display.display();
+
+      while (digitalRead(keyLockPin) == 0) {
+      }
+      delay(500);
+      timestamp = 0;
+    }
   }
 
 }
@@ -1416,9 +1447,7 @@ void drawNotReady(bool frame) {
     display.drawBitmap(109, 5, notready_warn, 13, 15, WHITE);
   }
 
-  display.setFont();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
+  resetFontStyles();
   display.setCursor(24, 24);
   display.println("not ready to play");
 }
@@ -1432,9 +1461,7 @@ void drawTimedOut(bool frame) {
     display.drawBitmap(57, 4, notready_warn, 13, 15, WHITE);
   }
 
-  display.setFont();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
+  resetFontStyles();
   display.setCursor(69, 24);
   display.println("timed out");
 }
@@ -1444,8 +1471,7 @@ void drawPcDisconnected() {
   display.drawBitmap(99, 14, err_shadow, 11, 11, BLACK);
   display.drawBitmap(99, 14, err, 11, 11, WHITE);
 
-  display.setFont();
-  display.setTextColor(WHITE);
+  resetFontStyles();
   display.setCursor(0, 4);
   display.println(" Not connected\n to script or\n sctipt failed");
 }
@@ -1458,11 +1484,9 @@ void drawPcWaiting() {
 
 void drawPc(bool center) {
   if (center) {
-    display.drawBitmap(49, 8, PC_shadow, 31, 21, BLACK);
     display.drawBitmap(49, 8, PC, 31, 21, WHITE);
 
   } else {
-    display.drawBitmap(94, 9, PC_shadow, 31, 21, BLACK);
     display.drawBitmap(94, 9, PC, 31, 21, WHITE);
   }
 }
@@ -1475,29 +1499,29 @@ void drawNanoSleep() {
 
 void drawPcSuccess() {
   drawPc(true);
-  display.drawBitmap(55, 13, checkmark_shadow, 10, 11, BLACK);
   display.drawBitmap(55, 13, checkmark, 10, 11, WHITE);
+}
+
+void drawPcButHigher() {
+  display.drawBitmap(49, 0, PC, 31, 21, WHITE);
+}
+
+void drawPcSuccessRfid() {
+  drawPcButHigher();
+  display.drawBitmap(55, 5, checkmark, 10, 11, WHITE);
+}
+
+void drawPcLocked() {
+  drawPcButHigher();
+  display.drawBitmap(55, 6, lock, 9, 9, WHITE);
 }
 
 void drawButtonPushedBig() {
   display.drawBitmap(47, 0, button_pushed_big, 32, 32, WHITE);
 }
 
-void testdrawstyles(void) {
-  display.clearDisplay();
-
-  display.setTextSize(1);             // Normal 1:1 pixel scale
-  display.setTextColor(SSD1306_WHITE);        // Draw white text
-  display.setCursor(0, 0);            // Start at top-left corner
-  display.println(F("Hello, world!"));
-
-  display.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Draw 'inverse' text
-  display.println(3.141592);
-
-  display.setTextSize(2);             // Draw 2X-scale text
+void resetFontStyles() {
   display.setTextColor(SSD1306_WHITE);
-  display.print(F("0x")); display.println(0xDEADBEEF, HEX);
-
-  display.display();
-  delay(2000);
+  display.setFont();
+  display.setTextSize(1);
 }

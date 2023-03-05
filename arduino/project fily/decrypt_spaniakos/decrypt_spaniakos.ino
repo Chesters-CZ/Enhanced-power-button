@@ -1,18 +1,18 @@
+#include <CzechKeyboard_QWERTZ.h>
 
 #include <AES.h>
 #include <AES_config.h>
 #include "base64.hpp"
 #include "EasyMFRC522.h"
-#include <CzechKeyboard_QWERTZ.h>
 
 
 AES aes;
 
-EasyMFRC522 rfid(10, 5);
+EasyMFRC522 rfid(10, 9);
 
 // !!! DŮLEŽITÉ !!!
 // Šifrovací klíč i inicializační vektor níže se musí
-// shodovat s těmi, které byly použity k šifrování hesla. 
+// shodovat s těmi, které byly použity k šifrování hesla.
 
 // Šifrovací klíč           "Sem je to AES128"sem 192"sem 256"
 byte *key = (unsigned char*)"4428472B4B625065";
@@ -31,6 +31,11 @@ void setup() {
   delay(500);
   rfid.init();
   Keyboard.begin();
+
+  pinMode(11, OUTPUT);  // card accepted
+  pinMode(12, OUTPUT);  // card removed, pc locked
+
+  Serial.println("RFID module");
 }
 
 void loop() {
@@ -86,12 +91,13 @@ void prectiADesifruj (int bits)
     delay(50); //0.05s
   } while (!success);
 
+  digitalWrite(11, HIGH);
   delay(100); // Ensures the chip is close enough
-
 
   Serial.println(F("TAG DETECTED!"));
   Serial.print(F("READING PASSWORD... "));
   block = rfid.readFile(1, "Pass", (byte*)pass64, 64);
+  digitalWrite(11, LOW);
   if (block >= 0) {
     Serial.println(F("SUCCESS"));
     s = pass64;
@@ -108,7 +114,7 @@ void prectiADesifruj (int bits)
       newBlock = rfid.readFile(50, "LogOff", (byte*)logOffPref, 64);
       if (newBlock >= 0) {
         Serial.println(F("SUCCESS"));
-        s = passLen;
+        s = logOffPref;
         Serial.println(s);
       }
       else {
@@ -190,28 +196,30 @@ void prectiADesifruj (int bits)
       }
 
       rfid.unselectMifareTag(true);
-      delay(50);
+      delay(100);
     } while (badReads < 10);
 
 
     Serial.print("Old tag ID: ");
     for (byte i = 2; i < 4; i++) {
       Serial.print(String(tagID[i]));
-          Serial.print(", ");
+      Serial.print(", ");
     }
     Serial.println();
 
     Serial.print("New tag ID: ");
     for (byte i = 2; i < 4; i++) {
       Serial.print(String(newTagID[i]));
-          Serial.print(", ");
+      Serial.print(", ");
     }
     Serial.println();
 
     Keyboard.press(KEY_LEFT_GUI);
     Keyboard.press('l');
-    delay(25);
+    digitalWrite(12, HIGH);
+    delay(100);
     Keyboard.releaseAll();
+    digitalWrite(12, LOW);
   }
 
   rfid.unselectMifareTag();
