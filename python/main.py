@@ -10,7 +10,7 @@ def getTime():
 
 def log(string):
     print(string)
-    file = open(os.environ['USERPROFILE'] + '/enhanced-power-button-log.txt', 'a')
+    file = open(os.environ['USERPROFILE'] + '/enhanced-power-button-log.txt', 'a', encoding='utf-8')
     file.write(string.__str__() + "\n")
     file.close()
 
