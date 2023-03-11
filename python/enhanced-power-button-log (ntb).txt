@@ -1,0 +1,551 @@
+
+################################
+
+################################
+Script spuštěn v 2023-03-11 16:25:40
+Dostupné COM porty jsou:
+COM3: Standard Serial over Bluetooth link (COM3) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_0000000D]
+COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000]
+COM6: Arduino Leonardo (COM6) [USB VID:PID=2341:8036 SER=HIDPC]
+COM7: Standard Serial over Bluetooth link (COM7) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_00000000]
+COM8: USB-SERIAL CH340 (COM8) [USB VID:PID=1A86:7523 SER= LOCATION=1-2.1:x.0]
+COM9: USB-SERIAL CH340 (COM9) [USB VID:PID=1A86:7523 SER= LOCATION=1-2.2:x.0]
+16:25:40 Zkouším se připojit na COM3 (Standard Serial over Bluetooth link (COM3))
+16:25:40 Zkouším se připojit na COM5 (Standard Serial over Bluetooth link (COM5))
+16:25:45 Nastala chyba při připojování k COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000] : could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+
+16:25:45 Zkouším se připojit na COM6 (Arduino Leonardo (COM6))
+16:25:45 Zkouším se připojit na COM7 (Standard Serial over Bluetooth link (COM7))
+16:25:45 Zkouším se připojit na COM8 (USB-SERIAL CH340 (COM8))
+16:25:45 Zkouším se připojit na COM9 (USB-SERIAL CH340 (COM9))
+16:25:45 Kontroluji seznam arduin. Pokus 0
+16:25:45 Kontroluji arduino na COM3
+COM3@16:25:46: b''
+16:25:46 Kontroluji arduino na None
+16:25:46 COM port None není otevřený.
+16:25:46 Kontroluji arduino na COM6
+COM6@16:25:46: b'MFRC522 sw version: v2.0\r\n'
+16:25:46 Kontroluji arduino na COM7
+COM7@16:25:47: b''
+16:25:47 Kontroluji arduino na COM8
+COM8@16:25:47: b'\r\n'
+16:25:47 Kontroluji arduino na COM9
+COM9@16:25:47: b'0\r\n'
+16:25:47 Kontroluji seznam arduin. Pokus 1
+16:25:47 Kontroluji arduino na COM3
+COM3@16:25:48: b''
+16:25:48 Kontroluji arduino na None
+16:25:48 COM port None není otevřený.
+16:25:48 Kontroluji arduino na COM6
+COM6@16:25:48: b'RFID module\r\n'
+16:25:48 Kontroluji arduino na COM7
+COM7@16:25:49: b''
+16:25:49 Kontroluji arduino na COM8
+COM8@16:25:49: b'Audio start\r\n'
+16:25:49 Kontroluji arduino na COM9
+COM9@16:25:50: b'Screen module\r\n'
+16:25:50: Nalezeno arduino s obrazovkou
+16:25:50 Arduino bude ukazovat čas
+16:25:50 Awaiting 'k'...
+COM8@16:25:50: 
+
+COM8@16:25:50: SYSTEM~1
+
+COM8@16:25:50: STARTU02.WAV
+
+COM8@16:25:50: STARTU03.WAV
+
+COM8@16:25:50: STARTU04.WAV
+
+COM8@16:25:50: STARTU05.WAV
+
+COM8@16:25:50: STARTU06.WAV
+
+COM8@16:25:50: STARTU07.WAV
+
+COM8@16:25:50: STARTU08.WAV
+
+COM8@16:25:50: STARTU09.WAV
+
+COM8@16:25:50: STARTU10.WAV
+
+COM8@16:25:50: STARTU11.WAV
+
+COM8@16:25:50: STARTU12.WAV
+
+COM8@16:25:50: STARTU13.WAV
+
+COM8@16:25:50: STARTU14.WAV
+
+COM8@16:25:50: STARTU15.WAV
+
+COM8@16:25:50: STARTU16.WAV
+
+COM8@16:25:50: STARTU17.WAV
+
+COM8@16:25:50: STARTU18.WAV
+
+COM8@16:25:50: STARTU19.WAV
+
+COM8@16:25:50: STARTU20.WAV
+
+COM8@16:25:50: STARTU21.WAV
+
+COM8@16:25:50: STARTU22.WAV
+
+COM8@16:25:50: STARTU23.WAV
+
+COM8@16:25:50: STARTU24.WAV
+
+COM8@16:25:50: STARTU25.WAV
+
+COM8@16:25:50: STARTU26.WAV
+
+COM8@16:25:50: STARTU27.WAV
+
+COM8@16:25:50: STARTU28.WAV
+
+COM8@16:25:50: STARTU29.WAV
+
+COM8@16:25:50: STARTU30.WAV
+
+COM8@16:25:50: STARTU31.WAV
+
+COM8@16:25:50: STARTU32.WAV
+
+COM8@16:25:50: STARTU33.WAV
+
+COM8@16:25:50: STARTU34.WAV
+
+COM8@16:25:50: STARTU35.WAV
+
+COM8@16:25:50: STARTU36.WAV
+
+COM8@16:25:50: STARTU37.WAV
+
+COM8@16:25:50: STARTU38.WAV
+
+COM8@16:25:50: STARTU39.WAV
+
+COM8@16:25:50: STARTU40.WAV
+
+COM8@16:25:50: STARTU41.WAV
+
+COM8@16:25:50: STARTU42.WAV
+
+COM8@16:25:50: STARTU43.WAV
+
+COM8@16:25:50: STARTU44.WAV
+
+COM8@16:25:50: STARTU45.WAV
+
+COM8@16:25:50: STARTU46.WAV
+
+COM8@16:25:50: STARTU47.WAV
+
+COM8@16:25:50: STARTU48.WAV
+
+COM8@16:25:50: STARTU49.WAV
+
+COM8@16:25:50: STARTU50.WAV
+
+COM8@16:25:50: BOOT.WAV
+
+COM8@16:25:50: STARTU01.WAV
+
+COM8@16:25:50: STARTU00.WAV
+
+COM8@16:25:50: STARTU51.WAV
+
+COM8@16:25:50: STARTU52.WAV
+
+COM8@16:25:50: STARTU53.WAV
+
+COM8@16:25:50: STARTU54.WAV
+
+COM8@16:25:50: STARTU55.WAV
+
+COM8@16:25:50: STARTU56.WAV
+
+COM8@16:25:50: STARTU57.WAV
+
+COM8@16:25:50: STARTU58.WAV
+
+COM8@16:25:50: STARTU59.WAV
+
+COM8@16:25:50: STARTU60.WAV
+
+COM8@16:25:50: STARTU61.WAV
+
+COM8@16:25:50: STARTU62.WAV
+
+COM8@16:25:50: STARTU63.WAV
+
+COM8@16:25:50: STARTU64.WAV
+
+COM8@16:25:50: STARTU65.WAV
+
+COM8@16:25:50: STARTU66.WAV
+
+COM8@16:25:50: STARTU67.WAV
+
+COM8@16:25:50: STARTU68.WAV
+
+COM8@16:25:50: STARTU69.WAV
+
+COM8@16:25:50: 
+
+COM8@16:25:50: 69 tracks found
+
+COM8@16:26:24: Received signal
+
+COM8@16:26:24: Playing STARTU56.WAV
+
+COM8@16:26:27: Received signal
+
+COM8@16:26:27: Playing STARTU64.WAV
+
+COM8@16:26:28: Received signal
+
+COM8@16:26:28: Playing STARTU33.WAV
+
+COM8@16:26:29: Received signal
+
+COM8@16:26:29: Playing STARTU62.WAV
+
+
+################################
+Script spuštěn v 2023-03-11 16:29:16
+Dostupné COM porty jsou:
+COM3: Standard Serial over Bluetooth link (COM3) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_0000000D]
+COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000]
+COM7: Standard Serial over Bluetooth link (COM7) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_00000000]
+16:29:16 Zkouším se připojit na COM3 (Standard Serial over Bluetooth link (COM3))
+16:29:16 Zkouším se připojit na COM5 (Standard Serial over Bluetooth link (COM5))
+16:29:22 Nastala chyba při připojování k COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000] : could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+
+16:29:22 Zkouším se připojit na COM7 (Standard Serial over Bluetooth link (COM7))
+16:29:22 Kontroluji seznam arduin. Pokus 0
+16:29:22 Kontroluji arduino na COM3
+COM3@16:29:23: b''
+16:29:23 Kontroluji arduino na None
+16:29:23 COM port None není otevřený.
+16:29:23 Kontroluji arduino na COM7
+COM7@16:29:24: b''
+16:29:24 Kontroluji seznam arduin. Pokus 1
+16:29:24 Kontroluji arduino na COM3
+COM3@16:29:25: b''
+16:29:25 Kontroluji arduino na None
+16:29:25 COM port None není otevřený.
+16:29:25 Kontroluji arduino na COM7
+COM7@16:29:26: b''
+16:29:26 Kontroluji seznam arduin. Pokus 2
+16:29:26 Kontroluji arduino na COM3
+COM3@16:29:27: b''
+16:29:27 Kontroluji arduino na None
+16:29:27 COM port None není otevřený.
+16:29:27 Kontroluji arduino na COM7
+COM7@16:29:28: b''
+16:29:28 Kontroluji seznam arduin. Pokus 3
+16:29:28 Kontroluji arduino na COM3
+COM3@16:29:29: b''
+16:29:29 Kontroluji arduino na None
+16:29:29 COM port None není otevřený.
+16:29:29 Kontroluji arduino na COM7
+COM7@16:29:30: b''
+16:29:30 Kontroluji seznam arduin. Pokus 4
+16:29:30 Kontroluji arduino na COM3
+COM3@16:29:31: b''
+16:29:31 Kontroluji arduino na None
+16:29:31 COM port None není otevřený.
+16:29:31 Kontroluji arduino na COM7
+COM7@16:29:32: b''
+16:29:32 Kontroluji seznam arduin. Pokus 5
+16:29:32 Kontroluji arduino na COM3
+COM3@16:29:33: b''
+16:29:33 Kontroluji arduino na None
+16:29:33 COM port None není otevřený.
+16:29:33 Kontroluji arduino na COM7
+COM7@16:29:34: b''
+16:29:34 Kontroluji seznam arduin. Pokus 6
+16:29:34 Kontroluji arduino na COM3
+COM3@16:29:35: b''
+16:29:35 Kontroluji arduino na None
+16:29:35 COM port None není otevřený.
+16:29:35 Kontroluji arduino na COM7
+COM7@16:29:36: b''
+16:29:36 Kontroluji seznam arduin. Pokus 7
+16:29:36 Kontroluji arduino na COM3
+COM3@16:29:37: b''
+16:29:37 Kontroluji arduino na None
+16:29:37 COM port None není otevřený.
+16:29:37 Kontroluji arduino na COM7
+COM7@16:29:38: b''
+16:29:38 Kontroluji seznam arduin. Pokus 8
+16:29:38 Kontroluji arduino na COM3
+COM3@16:29:39: b''
+16:29:39 Kontroluji arduino na None
+16:29:39 COM port None není otevřený.
+16:29:39 Kontroluji arduino na COM7
+COM7@16:29:40: b''
+16:29:40 Kontroluji seznam arduin. Pokus 9
+16:29:40 Kontroluji arduino na COM3
+COM3@16:29:41: b''
+16:29:41 Kontroluji arduino na None
+16:29:41 COM port None není otevřený.
+16:29:41 Kontroluji arduino na COM7
+COM7@16:29:42: b''
+16:29:42 Žádné z detekovaných arduin není obrazovkové, vypínám se.
+
+################################
+Script spuštěn v 2023-03-11 16:35:29
+Dostupné COM porty jsou:
+COM3: Standard Serial over Bluetooth link (COM3) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_0000000D]
+COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000]
+COM6: Arduino Leonardo (COM6) [USB VID:PID=2341:8036 SER=HIDPC]
+COM7: Standard Serial over Bluetooth link (COM7) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\8&2A5819FC&0&000000000000_00000000]
+COM8: USB-SERIAL CH340 (COM8) [USB VID:PID=1A86:7523 SER= LOCATION=1-2.1:x.0]
+COM9: USB-SERIAL CH340 (COM9) [USB VID:PID=1A86:7523 SER= LOCATION=1-2.2:x.0]
+16:35:29 Zkouším se připojit na COM3 (Standard Serial over Bluetooth link (COM3))
+16:35:29 Zkouším se připojit na COM5 (Standard Serial over Bluetooth link (COM5))
+16:35:34 Nastala chyba při připojování k COM5: Standard Serial over Bluetooth link (COM5) [BTHENUM\{00001101-0000-1000-8000-00805F9B34FB}_VID&0001005D_PID&223B\8&2A5819FC&0&1C5216ACAD82_C00000000] : could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+
+16:35:34 Zkouším se připojit na COM6 (Arduino Leonardo (COM6))
+16:35:34 Zkouším se připojit na COM7 (Standard Serial over Bluetooth link (COM7))
+16:35:34 Zkouším se připojit na COM8 (USB-SERIAL CH340 (COM8))
+16:35:34 Zkouším se připojit na COM9 (USB-SERIAL CH340 (COM9))
+16:35:34 Kontroluji seznam arduin. Pokus 0
+16:35:34 Kontroluji arduino na COM3
+COM3@16:35:35: b''
+16:35:35 Kontroluji arduino na None
+16:35:35 COM port None není otevřený.
+16:35:35 Kontroluji arduino na COM6
+COM6@16:35:35: b'MFRC522 sw version: v2.0\r\n'
+16:35:35 Kontroluji arduino na COM7
+COM7@16:35:36: b''
+16:35:36 Kontroluji arduino na COM8
+COM8@16:35:36: b'\r\n'
+16:35:36 Kontroluji arduino na COM9
+COM9@16:35:36: b'0\r\n'
+16:35:36 Kontroluji seznam arduin. Pokus 1
+16:35:36 Kontroluji arduino na COM3
+COM3@16:35:37: b''
+16:35:37 Kontroluji arduino na None
+16:35:37 COM port None není otevřený.
+16:35:37 Kontroluji arduino na COM6
+COM6@16:35:37: b'RFID module\r\n'
+16:35:37 Kontroluji arduino na COM7
+COM7@16:35:38: b''
+16:35:38 Kontroluji arduino na COM8
+COM8@16:35:38: b'Audio start\r\n'
+16:35:38 Kontroluji arduino na COM9
+COM9@16:35:39: b'Screen module\r\n'
+16:35:39: Nalezeno arduino s obrazovkou
+16:35:39 Arduino bude ukazovat čas
+16:35:39 Awaiting 'k'...
+COM8@16:35:39: 
+
+COM8@16:35:39: SYSTEM~1
+
+COM8@16:35:39: STARTU02.WAV
+
+COM8@16:35:39: STARTU03.WAV
+
+COM8@16:35:39: STARTU04.WAV
+
+COM8@16:35:39: STARTU05.WAV
+
+COM8@16:35:39: STARTU06.WAV
+
+COM8@16:35:39: STARTU07.WAV
+
+COM8@16:35:39: STARTU08.WAV
+
+COM8@16:35:39: STARTU09.WAV
+
+COM8@16:35:39: STARTU10.WAV
+
+COM8@16:35:39: STARTU11.WAV
+
+COM8@16:35:39: STARTU12.WAV
+
+COM8@16:35:39: STARTU13.WAV
+
+COM8@16:35:39: STARTU14.WAV
+
+COM8@16:35:39: STARTU15.WAV
+
+COM8@16:35:39: STARTU16.WAV
+
+COM8@16:35:39: STARTU17.WAV
+
+COM8@16:35:39: STARTU18.WAV
+
+COM8@16:35:39: STARTU19.WAV
+
+COM8@16:35:39: STARTU20.WAV
+
+COM8@16:35:39: STARTU21.WAV
+
+COM8@16:35:39: STARTU22.WAV
+
+COM8@16:35:39: STARTU23.WAV
+
+COM8@16:35:39: STARTU24.WAV
+
+COM8@16:35:39: STARTU25.WAV
+
+COM8@16:35:39: STARTU26.WAV
+
+COM8@16:35:39: STARTU27.WAV
+
+COM8@16:35:39: STARTU28.WAV
+
+COM8@16:35:39: STARTU29.WAV
+
+COM8@16:35:39: STARTU30.WAV
+
+COM8@16:35:39: STARTU31.WAV
+
+COM8@16:35:39: STARTU32.WAV
+
+COM8@16:35:39: STARTU33.WAV
+
+COM8@16:35:39: STARTU34.WAV
+
+COM8@16:35:39: STARTU35.WAV
+
+COM8@16:35:39: STARTU36.WAV
+
+COM8@16:35:39: STARTU37.WAV
+
+COM8@16:35:39: STARTU38.WAV
+
+COM8@16:35:39: STARTU39.WAV
+
+COM8@16:35:39: STARTU40.WAV
+
+COM8@16:35:39: STARTU41.WAV
+
+COM8@16:35:39: STARTU42.WAV
+
+COM8@16:35:39: STARTU43.WAV
+
+COM8@16:35:39: STARTU44.WAV
+
+COM8@16:35:39: STARTU45.WAV
+
+COM8@16:35:39: STARTU46.WAV
+
+COM8@16:35:39: STARTU47.WAV
+
+COM8@16:35:39: STARTU48.WAV
+
+COM8@16:35:39: STARTU49.WAV
+
+COM8@16:35:39: STARTU50.WAV
+
+COM8@16:35:39: BOOT.WAV
+
+COM8@16:35:39: STARTU01.WAV
+
+COM8@16:35:39: STARTU00.WAV
+
+COM8@16:35:39: STARTU51.WAV
+
+COM8@16:35:39: STARTU52.WAV
+
+COM8@16:35:39: STARTU53.WAV
+
+COM8@16:35:39: STARTU54.WAV
+
+COM8@16:35:39: STARTU55.WAV
+
+COM8@16:35:39: STARTU56.WAV
+
+COM8@16:35:39: STARTU57.WAV
+
+COM8@16:35:39: STARTU58.WAV
+
+COM8@16:35:39: STARTU59.WAV
+
+COM8@16:35:39: STARTU60.WAV
+
+COM8@16:35:39: STARTU61.WAV
+
+COM8@16:35:39: STARTU62.WAV
+
+COM8@16:35:39: STARTU63.WAV
+
+COM8@16:35:39: STARTU64.WAV
+
+COM8@16:35:39: STARTU65.WAV
+
+COM8@16:35:39: STARTU66.WAV
+
+COM8@16:35:39: STARTU67.WAV
+
+COM8@16:35:39: STARTU68.WAV
+
+COM8@16:35:39: STARTU69.WAV
+
+COM8@16:35:39: 
+
+COM8@16:35:39: 69 tracks found
+
+COM8@16:35:46: Received signal
+
+COM8@16:35:46: Playing STARTU04.WAV
+
+COM8@16:35:46: Received signal
+
+COM8@16:35:46: Playing STARTU24.WAV
+
+COM8@16:35:47: Received signal
+
+COM8@16:35:47: Playing STARTU64.WAV
+
+COM8@16:35:50: Received signal
+
+COM8@16:35:50: Playing STARTU33.WAV
+
+COM8@16:36:07: Received signal
+
+COM8@16:36:07: Playing STARTU67.WAV
+
+COM8@16:36:09: Received signal
+
+COM8@16:36:09: Playing STARTU27.WAV
+
+COM8@16:36:39: Received signal
+
+COM8@16:36:39: Playing STARTU55.WAV
+
+COM8@16:36:40: Received signal
+
+COM8@16:36:40: Playing STARTU30.WAV
+
+COM8@16:36:42: Received signal
+
+COM8@16:36:42: Playing STARTU33.WAV
+
+COM8@16:36:43: Received signal
+
+COM8@16:36:43: Playing STARTU42.WAV
+
+COM8@16:37:13: Received signal
+
+COM8@16:37:13: Playing STARTU53.WAV
+
+COM8@16:37:14: Received signal
+
+COM8@16:37:14: Playing STARTU33.WAV
+
+COM8@16:37:33: Received signal
+
+COM8@16:37:33: Playing STARTU31.WAV
+
+COM8@16:37:35: Received signal
+
+COM8@16:37:35: Playing STARTU22.WAV
+
