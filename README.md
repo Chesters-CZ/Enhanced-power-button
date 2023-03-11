@@ -25,4 +25,6 @@ There is also an uploader version, which encrypts a set string and writes it ont
 
 This is a script designed to be run on OS startup. On Windows, this can be accomplished by creating a shortcut to the .py file in `C:\Users\YourName\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`. It contacts all of the Arduinos through their respective COM ports, restarting them in the process. The script then loads a config file from the user's folder in `C:\Users\` and tells the main Arduino what to display when idle. If the user has chosen time or date to be displayed, the script also sends the current time and possibly the date. The Arduino is not able to keep time information through a reboot, only keeping track of how long it is running and even that deviates by around -120s per 24h. By refreshing the time information every time the computer is rebooted, I can ignore dealing with leap years and daylight savings time by just making the user restart their computer or relaunch the script.
 
-#### I could only upload a compressed version of the final pdf. The original version is available on my website [here](https://chesters.cz/files/Maturitni-prace.pdf).
+#### NOTE: If you're getting an error about a missing Serial module, run `pip install pyserial`. The library I used for serial communication is not installed by default.
+
+#### NOTE 2: I could only upload a compressed version of the final pdf. The original version is available on my website [here](https://chesters.cz/files/Maturitni-prace.pdf).
