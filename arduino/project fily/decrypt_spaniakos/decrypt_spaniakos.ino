@@ -141,6 +141,7 @@ void prectiADesifruj (int bits)
     result = result.substring(0, s.toInt());
     Serial.println(result);
     Keyboard.print(result);
+    Keyboard.flush();
   } else {
     Serial.print("READING FAILED ");
     Serial.println(block);
