@@ -26,16 +26,16 @@ void setup() {
   pinMode(commsOutPin, OUTPUT);
   pinMode(commsInPin, INPUT_PULLUP);
 
-  
 
-  if (!SD.begin(SD_ChipSelectPin)){
-        Serial.println("SD could not be initialized.");
+
+  if (!SD.begin(SD_ChipSelectPin)) {
+    Serial.println("SD could not be initialized.");
     cww_MorseTx morse(0, 10, 9, 1000);
     morse.send("NO SD");
-    while (true){
+    while (true) {
     }
   }
-  
+
   File root = SD.open("/");
   File currentFile;
 
@@ -49,7 +49,7 @@ void setup() {
       break;
     } else if (currentFile.isDirectory()) {
       continue;
-    } else if(!fileName.equals("BOOT.WAV")) {
+    } else if (!fileName.equals("BOOT.WAV")) {
       totalTracks++;
     }
     currentFile.close();
